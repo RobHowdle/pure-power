@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@config "../../tailwind.config.js";
+@plugin "@tailwindcss/forms";
+
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Montserrat:wght@400;700;800&display=swap');
+
+@theme {
+    --color-darkYellow: #E58D37;
+    --color-lightYellow: #FFB26A;
+    --color-lightGrey: #CCCCCC;
+
+    --font-sans: "Montserrat", "Figtree", sans-serif;
+    --font-montserrat: "Montserrat", sans-serif;
+    --font-imfell: "IM Fell DW Pica", serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0 !important;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'IM Fell DW Pica', serif;
+}

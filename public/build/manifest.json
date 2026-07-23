@@ -1,0 +1,77 @@
+{
+  "_fonts-CAuKuqUq.css": {
+    "file": "assets/fonts-CAuKuqUq.css",
+    "src": "_fonts-CAuKuqUq.css"
+  },
+  "_im-fell-dw-pica-400-normal-BckB3Xg5.woff": {
+    "file": "assets/im-fell-dw-pica-400-normal-BckB3Xg5.woff",
+    "src": "_im-fell-dw-pica-400-normal-BckB3Xg5.woff"
+  },
+  "_im-fell-dw-pica-400-normal-CvO4MhwA.woff2": {
+    "file": "assets/im-fell-dw-pica-400-normal-CvO4MhwA.woff2",
+    "src": "_im-fell-dw-pica-400-normal-CvO4MhwA.woff2"
+  },
+  "_montserrat-400-normal-BLhwKU8k.woff2": {
+    "file": "assets/montserrat-400-normal-BLhwKU8k.woff2",
+    "src": "_montserrat-400-normal-BLhwKU8k.woff2"
+  },
+  "_montserrat-400-normal-xItZbAXg.woff": {
+    "file": "assets/montserrat-400-normal-xItZbAXg.woff",
+    "src": "_montserrat-400-normal-xItZbAXg.woff"
+  },
+  "_montserrat-500-normal-DRFEGfly.woff2": {
+    "file": "assets/montserrat-500-normal-DRFEGfly.woff2",
+    "src": "_montserrat-500-normal-DRFEGfly.woff2"
+  },
+  "_montserrat-500-normal-Dok2oTci.woff": {
+    "file": "assets/montserrat-500-normal-Dok2oTci.woff",
+    "src": "_montserrat-500-normal-Dok2oTci.woff"
+  },
+  "_montserrat-600-normal-CdhFl4lI.woff": {
+    "file": "assets/montserrat-600-normal-CdhFl4lI.woff",
+    "src": "_montserrat-600-normal-CdhFl4lI.woff"
+  },
+  "_montserrat-600-normal-UVxSCcoG.woff2": {
+    "file": "assets/montserrat-600-normal-UVxSCcoG.woff2",
+    "src": "_montserrat-600-normal-UVxSCcoG.woff2"
+  },
+  "_montserrat-700-normal-BWkrl476.woff": {
+    "file": "assets/montserrat-700-normal-BWkrl476.woff",
+    "src": "_montserrat-700-normal-BWkrl476.woff"
+  },
+  "_montserrat-700-normal-BdjcYUrC.woff2": {
+    "file": "assets/montserrat-700-normal-BdjcYUrC.woff2",
+    "src": "_montserrat-700-normal-BdjcYUrC.woff2"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-k4XmFrGq.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-j6SQvld4.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-CnXgWOmD.css",
+      "assets/app-k4XmFrGq.css"
+    ],
+    "assets": [
+      "assets/logo-BZ4rQcN0.png",
+      "assets/smoke-D0twUiRm.png"
+    ]
+  },
+  "resources/js/assets/logo.png": {
+    "file": "assets/logo-BZ4rQcN0.png",
+    "src": "resources/js/assets/logo.png"
+  },
+  "resources/js/assets/smoke.png": {
+    "file": "assets/smoke-D0twUiRm.png",
+    "src": "resources/js/assets/smoke.png"
+  }
+}
