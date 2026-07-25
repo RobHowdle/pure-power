@@ -122,7 +122,7 @@ loadPages();
 							</button>
 
 							<RouterLink
-								:to="`/pages/${page.id}/edit`"
+								:to="`/admin/pages/${page.id}/edit`"
 								class="font-extrabold uppercase tracking-widest text-darkYellow hover:text-lightYellow">
 								Edit
 							</RouterLink>
