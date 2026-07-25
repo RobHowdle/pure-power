@@ -26,18 +26,19 @@
 								<img
 									:src="artistImageSrc(artist.logo_url)"
 									:alt="artist.name"
-									class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition duration-500"
+									class="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition duration-500"
 									@error="onArtistImageError" />
 							</div>
 
 							<!-- Fade overlay -->
 							<div
-								class="absolute inset-0 bg-gradient-to-r from-transparent via-black/50 to-black/90"></div>
+								class="absolute inset-0 bg-gradient-to-r from-black/10 via-black/80 to-black"></div>
 
 							<!-- Artist content -->
 							<div
 								class="relative min-h-48 flex items-center justify-end pr-16">
-								<div class="w-[65%]">
+								<div
+									class="w-[65%] rounded border border-white/10 bg-black/45 p-4 backdrop-blur-sm [text-shadow:0_2px_8px_rgba(0,0,0,0.9)]">
 									<div
 										class="text-white font-bold font-montserrat text-lg">
 										{{ artist.name }}
@@ -71,7 +72,7 @@
 								class="absolute right-3 top-1/2 -translate-y-1/2">
 								<button
 									type="button"
-									class="w-10 h-10 rounded-full border border-white/25 text-white hover:border-darkYellow hover:text-darkYellow transition"
+									class="w-10 h-10 cursor-pointer rounded-full border border-white/25 text-white hover:border-darkYellow hover:text-darkYellow transition"
 									:aria-label="`Open details for ${artist.name}`"
 									@click="openArtistModal(artist)">
 									&gt;
