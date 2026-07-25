@@ -3,8 +3,6 @@ import {RouterLink} from "vue-router";
 import axios from "axios";
 import {ref, onMounted} from "vue";
 
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-
 const showingNavigationDropdown = ref(false);
 
 const user = ref(null);
@@ -35,9 +33,11 @@ async function logout() {
 				<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div class="flex h-16 justify-between">
 						<div class="flex items-center gap-8">
-							<RouterLink to="/dashboard">
-								<ApplicationLogo
-									class="h-9 w-auto fill-current text-white" />
+							<RouterLink to="/" target="_blank">
+								<img
+									class="h-9 w-auto"
+									src="/logo.png"
+									alt="Pure Power" />
 							</RouterLink>
 
 							<div class="hidden sm:flex gap-6">
