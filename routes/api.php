@@ -56,6 +56,5 @@ Route::get('/artists/{slug}', [PublicArtistController::class, 'show']);
 Route::post('/contact', [ContactController::class, 'send']);
 
 Route::middleware('auth')->get('/user', function (Request $request) {
-    dd($request->user());
     return $request->user();
 });

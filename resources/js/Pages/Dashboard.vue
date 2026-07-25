@@ -3,8 +3,6 @@ import {ref} from "vue";
 import {RouterLink} from "vue-router";
 import axios from "axios";
 
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-
 const showingNavigationDropdown = ref(false);
 
 const user = ref({

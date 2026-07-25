@@ -48,25 +48,25 @@ async function logout() {
 								</RouterLink>
 
 								<RouterLink
-									to="/pages"
+									to="/admin/pages"
 									class="text-sm text-white/80 hover:text-white">
 									Pages
 								</RouterLink>
 
 								<RouterLink
-									to="/artists"
+									to="/admin/artists"
 									class="text-sm text-white/80 hover:text-white">
 									Artists
 								</RouterLink>
 
 								<RouterLink
-									to="/gigs"
+									to="/admin/gigs"
 									class="text-sm text-white/80 hover:text-white">
 									Gigs
 								</RouterLink>
 
 								<RouterLink
-									to="/blog"
+									to="/admin/blog"
 									class="text-sm text-white/80 hover:text-white">
 									Blog
 								</RouterLink>

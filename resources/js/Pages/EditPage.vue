@@ -368,7 +368,7 @@ const updatePage = async () => {
 		status: status.value,
 	});
 
-	router.push("/pages");
+	router.push("/admin/pages");
 };
 </script>
 
