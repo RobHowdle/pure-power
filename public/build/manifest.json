@@ -44,7 +44,7 @@
     "src": "_montserrat-700-normal-BdjcYUrC.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BDh3eIyQ.css",
+    "file": "assets/app-Werba7Rp.css",
     "name": "app",
     "names": [
       "app.css"
@@ -53,13 +53,13 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BS_IECIs.js",
+    "file": "assets/app-D8If8kPA.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
       "assets/app-75lZctFY.css",
-      "assets/app-BDh3eIyQ.css"
+      "assets/app-Werba7Rp.css"
     ],
     "assets": [
       "assets/logo-BZ4rQcN0.png",

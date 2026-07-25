@@ -137,11 +137,6 @@ import {useRoute, useRouter} from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const apiOrigin =
-	import.meta.env.VITE_API_BASE_URL ||
-	import.meta.env.VITE_API_PROXY_TARGET ||
-	"http://127.0.0.1";
-
 const slug = computed(() => String(route.params.slug || ""));
 const artist = ref(null);
 const loading = ref(true);
@@ -157,10 +152,11 @@ function onArtistImageError(event) {
 function artistImageSrc(imageUrl) {
 	if (typeof imageUrl === "string" && imageUrl.trim()) {
 		if (/^(https?:)?\/\//i.test(imageUrl)) return imageUrl;
-		if (imageUrl.startsWith("/")) return `${apiOrigin}${imageUrl}`;
-		return `${apiOrigin}/${imageUrl}`;
+		if (imageUrl.startsWith("/")) return imageUrl;
+		return `/${imageUrl}`;
 	}
-	return "/src/assets/logo.png";
+
+	return "/logo.png";
 }
 
 async function fetchArtist() {

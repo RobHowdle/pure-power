@@ -85,10 +85,10 @@
 
 		<div
 			v-if="isModalOpen"
-			class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/80"
+			class="fixed inset-0 z-50 flex items-center justify-center px-4 py-6 bg-black/80"
 			@click.self="closeArtistModal">
 			<div
-				class="w-full max-w-3xl border border-white/25 bg-charcoal"
+				class="w-full max-w-3xl max-h-[85vh] flex flex-col border border-white/25 bg-charcoal overflow-hidden"
 				style="box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.8)">
 				<div
 					class="flex items-center justify-between px-5 py-4 border-b border-white/10">
@@ -104,7 +104,7 @@
 					</button>
 				</div>
 
-				<div class="p-5">
+				<div class="p-5 overflow-y-auto">
 					<div
 						v-if="isModalLoading"
 						class="text-lightGrey font-montserrat">
@@ -114,11 +114,12 @@
 					<div
 						v-else-if="modalArtist"
 						class="grid gap-5 sm:grid-cols-[220px,1fr]">
-						<div class="border border-white/15 bg-black/30">
+						<div
+							class="border border-white/15 bg-black/30 h-56 sm:h-full">
 							<img
 								:src="artistImageSrc(modalArtist.image_url)"
 								:alt="modalArtist.name"
-								class="w-full h-full object-cover"
+								class="w-full h-56 sm:h-full object-cover"
 								@error="onArtistImageError" />
 						</div>
 
@@ -194,19 +195,17 @@ const artistsContent = computed(() => {
 });
 
 function onArtistImageError(event) {
-	const img = event?.target;
-	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.png")) return;
-	img.src = "/src/assets/logo.png";
+	console.error("Artist image failed:", event.target.src);
 }
 
 function artistImageSrc(imageUrl) {
 	if (typeof imageUrl === "string" && imageUrl.trim()) {
 		if (/^(https?:)?\/\//i.test(imageUrl)) return imageUrl;
-		if (imageUrl.startsWith("/")) return `${apiOrigin}${imageUrl}`;
-		return `${apiOrigin}/${imageUrl}`;
+		if (imageUrl.startsWith("/")) return imageUrl;
+		return `/${imageUrl}`;
 	}
-	return "/src/assets/logo.png";
+
+	return "/logo.png";
 }
 
 function socialLabel(link) {
