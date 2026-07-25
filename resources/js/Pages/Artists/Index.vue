@@ -230,7 +230,9 @@ const editArtist = (artist) => {
 			</div>
 
 			<div>
-				<h3 class="mb-4 text-lg font-bold text-lightGrey">Artists</h3>
+				<h3 class="mb-4 text-lg font-bold text-lightGrey">
+					Existing Artists
+				</h3>
 
 				<ul class="space-y-2">
 					<li

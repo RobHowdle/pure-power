@@ -31,7 +31,7 @@ class BlogPostController extends Controller
             'slug' => 'nullable|string|max:255|unique:blog_posts,slug',
             'status' => 'required|in:draft,published',
             'content' => 'nullable|string',
-            'featured_image' => 'nullable|image|max:5120',
+            'featured_image' => 'nullable|image|max:20480',
         ]);
 
         $validated['slug'] = $this->generateUniqueSlug(
@@ -71,7 +71,7 @@ class BlogPostController extends Controller
             'slug' => 'nullable|string|max:255|unique:blog_posts,slug,' . $blogPost->id,
             'status' => 'required|in:draft,published',
             'content' => 'nullable|string',
-            'featured_image' => 'nullable|image|max:5120',
+            'featured_image' => 'nullable|image|max:20480',
         ]);
 
         $validated['slug'] = $this->generateUniqueSlug(

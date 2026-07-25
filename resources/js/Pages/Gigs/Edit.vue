@@ -270,6 +270,9 @@ onMounted(() => {
 							accept="image/*"
 							@change="onPosterImageSelected"
 							class="mt-2 w-full rounded-none border border-white/20 bg-black/35 p-3 text-white focus:border-darkYellow focus:ring focus:ring-darkYellow/25" />
+						<span class="mt-2 block text-xs text-white/55">
+							Max file size: 20MB
+						</span>
 						<p
 							v-if="gig.data?.poster_image_url"
 							class="mt-2 text-xs text-white/55">

@@ -181,7 +181,9 @@ onMounted(loadPost);
 							accept="image/*"
 							@change="onFeaturedImageSelected"
 							class="mt-2 w-full border border-white/20 bg-black/35 p-3 text-white" />
-
+						<span class="mt-2 block text-xs text-white/55">
+							Max file size: 20MB
+						</span>
 						<p
 							v-if="post.featured_image_url"
 							class="mt-2 text-xs text-white/60">

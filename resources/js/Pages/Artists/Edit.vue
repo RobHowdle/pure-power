@@ -267,6 +267,9 @@ onMounted(() => {
 							accept="image/*"
 							@change="onImageSelected"
 							class="mt-2 w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25" />
+						<span class="mt-2 block text-xs text-white/55">
+							Max file size: 20MB
+						</span>
 						<p
 							v-if="errors.image"
 							class="mt-2 text-sm text-red-300">
@@ -297,7 +300,9 @@ onMounted(() => {
 							accept="image/*"
 							@change="onLogoSelected"
 							class="mt-2 w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-
+						<span class="mt-2 block text-xs text-white/55">
+							Max file size: 20MB
+						</span>
 						<p
 							v-if="artist?.logo_url"
 							class="mt-2 text-xs text-white/55">

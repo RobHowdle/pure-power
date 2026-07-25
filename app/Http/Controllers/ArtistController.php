@@ -35,8 +35,8 @@ class ArtistController extends Controller
             'excerpt' => 'nullable|string',
             'data' => 'nullable',
 
-            'image' => 'nullable|image|max:5120',
-            'logo' => 'nullable|image|max:5120',
+            'image' => 'nullable|image|max:20480',
+            'logo' => 'nullable|image|max:20480',
         ]);
 
         $validated['data'] = $request->filled('data')
@@ -80,8 +80,8 @@ class ArtistController extends Controller
             'status' => 'required|in:draft,published',
             'content' => 'nullable|string',
             'data' => 'nullable|json',
-            'image' => 'nullable|image|max:5120',
-            'logo' => 'nullable|image|max:5120',
+            'image' => 'nullable|image|max:20480',
+            'logo' => 'nullable|image|max:20480',
         ]);
 
         $validated['slug'] = $validated['slug']

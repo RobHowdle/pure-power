@@ -158,7 +158,7 @@ class GigController extends Controller
 
             'content' => 'nullable|string',
 
-            'poster_image' => 'nullable|image|max:5120',
+            'poster_image' => 'nullable|image|max:20480',
         ]);
     }
 }
