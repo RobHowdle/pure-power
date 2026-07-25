@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\BlogPostController;
@@ -53,3 +54,8 @@ Route::get('/artists', [PublicArtistController::class, 'index']);
 Route::get('/artists/{slug}', [PublicArtistController::class, 'show']);
 
 Route::post('/contact', [ContactController::class, 'send']);
+
+Route::middleware('auth')->get('/user', function (Request $request) {
+    dd($request->user());
+    return $request->user();
+});

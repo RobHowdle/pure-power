@@ -9,7 +9,7 @@ import Blog from "@/Components/BlogView.vue";
 import BlogPost from "@/Components/BlogPostView.vue";
 import Contact from "@/Components/ContactView.vue";
 import MeetTheTeam from "@/Components/MeetTheTeam.vue";
-import Login from "@/Components/LoginView.vue";
+import LoginView from "@/Components/LoginView.vue";
 import Dashboard from "@/Pages/Dashboard.vue";
 import PageManager from "@/Pages/PageManager.vue";
 import EditPage from "@/Pages/EditPage.vue";
@@ -73,7 +73,7 @@ const routes = [
 	{
 		path: "/login",
 		name: "login",
-		component: Login,
+		component: LoginView,
 	},
 	{
 		path: "/dashboard",

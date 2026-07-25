@@ -1,15 +1,25 @@
 <script setup>
-import {ref} from "vue";
 import {RouterLink} from "vue-router";
 import axios from "axios";
+import {ref, onMounted} from "vue";
 
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
 const showingNavigationDropdown = ref(false);
 
-const user = ref({
-	name: "User",
-	email: "",
+const user = ref(null);
+
+async function getUser() {
+	try {
+		const response = await axios.get("/api/user");
+		user.value = response.data;
+	} catch (error) {
+		console.error("Unable to load user", error);
+	}
+}
+
+onMounted(() => {
+	getUser();
 });
 
 async function logout() {
@@ -65,7 +75,7 @@ async function logout() {
 
 						<div class="hidden sm:flex items-center">
 							<span class="mr-4 text-sm text-white/70">
-								{{ user.name }}
+								{{ user?.name ?? "User" }}
 							</span>
 
 							<button

@@ -1,9 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Montserrat:wght@400;700;800&display=swap');
+
 @import "tailwindcss";
 
 @config "../../tailwind.config.js";
 @plugin "@tailwindcss/forms";
-
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Montserrat:wght@400;700;800&display=swap');
 
 @theme {
     --color-darkYellow: #E58D37;

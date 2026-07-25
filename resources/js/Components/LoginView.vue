@@ -1,12 +1,9 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
 import {reactive, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const form = reactive({
 	email: "",
@@ -14,82 +11,102 @@ const form = reactive({
 	remember: false,
 });
 
-const errors = ref({});
+const errors = reactive({});
 const processing = ref(false);
 const status = ref("");
 
-const router = useRouter();
-
-async function submit() {
+const submit = async () => {
 	processing.value = true;
-	errors.value = {};
+
+	Object.keys(errors).forEach((key) => delete errors[key]);
 
 	try {
 		await axios.post("/login", form);
 
+		// Redirect after successful login
 		router.push("/dashboard");
 	} catch (error) {
 		if (error.response?.status === 422) {
-			errors.value = error.response.data.errors;
+			Object.assign(errors, error.response.data.errors);
+		} else {
+			console.error(error);
+			status.value = "Something went wrong. Please try again.";
 		}
 	} finally {
 		processing.value = false;
+		form.password = "";
 	}
-}
+};
 </script>
 
 <template>
-	<div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-		{{ status }}
-	</div>
+	<main class="flex-1 flex items-center justify-center px-4 py-10">
+		<div class="w-full max-w-md bg-black/70 border border-white p-6">
+			<h1
+				class="text-3xl font-bold text-darkYellow font-imfell uppercase mb-6 text-center">
+				Login
+			</h1>
 
-	<form @submit.prevent="submit">
-		<div>
-			<InputLabel for="email" value="Email" />
+			<div v-if="status" class="mb-4 text-sm text-green-500">
+				{{ status }}
+			</div>
 
-			<TextInput
-				id="email"
-				type="email"
-				class="mt-1 block w-full"
-				v-model="form.email"
-				required
-				autofocus
-				autocomplete="username" />
+			<form @submit.prevent="submit">
+				<div class="mb-4">
+					<label for="email" class="block text-white mb-2">
+						Email
+					</label>
 
-			<InputError :message="errors.email" />
+					<input
+						id="email"
+						v-model="form.email"
+						type="email"
+						required
+						autocomplete="username"
+						class="w-full bg-transparent border border-white text-white p-2" />
+
+					<p v-if="errors.email" class="text-red-500 text-sm mt-1">
+						{{ errors.email[0] }}
+					</p>
+				</div>
+
+				<div class="mb-4">
+					<label for="password" class="block text-white mb-2">
+						Password
+					</label>
+
+					<input
+						id="password"
+						v-model="form.password"
+						type="password"
+						required
+						autocomplete="current-password"
+						class="w-full bg-transparent border border-white text-white p-2" />
+
+					<p v-if="errors.password" class="text-red-500 text-sm mt-1">
+						{{ errors.password[0] }}
+					</p>
+				</div>
+
+				<div class="mb-6 flex items-center">
+					<input
+						id="remember"
+						v-model="form.remember"
+						type="checkbox"
+						class="mr-2" />
+
+					<label for="remember" class="text-white text-sm">
+						Remember me
+					</label>
+				</div>
+
+				<button
+					type="submit"
+					:disabled="processing"
+					class="w-full bg-darkYellow text-black font-bold py-2 uppercase disabled:opacity-50">
+					{{ processing ? "Logging in..." : "Login" }}
+				</button>
+			</form>
 		</div>
-
-		<div class="mt-4">
-			<InputLabel for="password" value="Password" />
-
-			<TextInput
-				id="password"
-				type="password"
-				class="mt-1 block w-full"
-				v-model="form.password"
-				required
-				autocomplete="current-password" />
-
-			<InputError :message="errors.password" />
-		</div>
-
-		<div class="mt-4 block">
-			<label class="flex items-center">
-				<Checkbox name="remember" v-model:checked="form.remember" />
-				<span class="ms-2 text-sm text-gray-600">Remember me</span>
-			</label>
-		</div>
-
-		<div class="mt-4 flex items-center justify-end">
-			<RouterLink to="/forgot-password">
-				Forgot your password?
-			</RouterLink>
-			<PrimaryButton
-				class="ms-4"
-				:class="{'opacity-25': processing}"
-				:disabled="processing">
-				Log in
-			</PrimaryButton>
-		</div>
-	</form>
+	</main>
 </template>
