@@ -10,6 +10,8 @@ const artists = ref([]);
 const name = ref("");
 const slug = ref("");
 const status = ref("draft");
+const imagePreview = ref(null);
+const uploading = ref(false);
 const imageFile = ref(null);
 const slugManuallyEdited = ref(false);
 
@@ -17,6 +19,10 @@ const loadArtists = async () => {
 	const response = await axios.get("/api/admin/artists");
 	artists.value = response.data;
 };
+
+watch(name, (newName) => {
+	slug.value = slugify(newName);
+});
 
 onMounted(() => {
 	loadArtists();
@@ -41,35 +47,62 @@ const onSlugInput = () => {
 };
 
 const onImageSelected = (event) => {
-	imageFile.value = event.target.files?.[0] ?? null;
+	const file = event.target.files?.[0] ?? null;
+
+	if (!file) {
+		imageFile.value = null;
+		imagePreview.value = null;
+		return;
+	}
+
+	if (!file.type.startsWith("image/")) {
+		alert("Please select an image file.");
+		event.target.value = "";
+		return;
+	}
+
+	if (file.size > 5 * 1024 * 1024) {
+		alert("Image must be smaller than 5MB.");
+		event.target.value = "";
+		return;
+	}
+
+	imageFile.value = file;
+	imagePreview.value = URL.createObjectURL(file);
 };
 
 const createArtist = async () => {
-	const form = new FormData();
+	uploading.value = true;
 
-	form.append("name", name.value);
-	form.append("slug", slug.value);
-	form.append("status", status.value);
+	try {
+		const form = new FormData();
 
-	if (imageFile.value) {
-		form.append("image", imageFile.value);
+		form.append("name", name.value);
+		form.append("slug", slug.value);
+		form.append("status", status.value);
+
+		if (imageFile.value) {
+			form.append("logo", imageFile.value);
+		}
+
+		await axios.post("/api/admin/artists", form, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		name.value = "";
+		slug.value = "";
+		status.value = "draft";
+		imageFile.value = null;
+		imagePreview.value = null;
+		slugManuallyEdited.value = false;
+
+		await loadArtists();
+	} finally {
+		uploading.value = false;
 	}
-
-	await axios.post("/api/admin/artists", form, {
-		headers: {
-			"Content-Type": "multipart/form-data",
-		},
-	});
-
-	name.value = "";
-	slug.value = "";
-	status.value = "draft";
-	imageFile.value = null;
-	slugManuallyEdited.value = false;
-
-	await loadArtists();
 };
-
 const toggleHidden = async (artist) => {
 	await axios.patch(`/api/admin/artists/${artist.id}/toggle-hidden`);
 
@@ -96,44 +129,102 @@ const editArtist = (artist) => {
 
 			<div
 				class="mb-8 overflow-hidden border border-white/10 bg-black/60 p-6 backdrop-blur sm:rounded-lg">
-				<h3 class="mb-4 text-lg font-bold text-lightGrey">
+				<h3 class="mb-6 text-lg font-bold text-lightGrey">
 					Add Artist
 				</h3>
 
-				<form @submit.prevent="createArtist" class="space-y-4">
-					<input
-						v-model="name"
-						type="text"
-						placeholder="Name"
-						class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25"
-						required />
+				<form @submit.prevent="createArtist" class="space-y-5">
+					<div>
+						<label
+							class="mb-2 block text-sm font-bold uppercase tracking-widest text-white/70">
+							Artist Name
+						</label>
 
-					<input
-						v-model="slug"
-						@input="onSlugInput"
-						type="text"
-						placeholder="Slug (e.g. amy-winehouse)"
-						class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25"
-						required />
+						<input
+							v-model="name"
+							type="text"
+							placeholder="e.g. Metallica"
+							class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25"
+							required />
 
-					<input
-						type="file"
-						accept="image/*"
-						@change="onImageSelected"
-						class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+						<p class="mt-1 text-xs text-white/50">
+							The name displayed publicly on the festival site.
+						</p>
+					</div>
 
-					<select
-						v-model="status"
-						class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white focus:border-darkYellow focus:ring focus:ring-darkYellow/25">
-						<option value="draft">Draft</option>
+					<div>
+						<label
+							class="mb-2 block text-sm font-bold uppercase tracking-widest text-white/70">
+							URL Slug
+						</label>
+						<input
+							:value="slug"
+							readonly
+							class="w-full cursor-not-allowed border border-white/20 bg-black/20 p-3 text-white/70" />
 
-						<option value="published">Published</option>
-					</select>
+						<p class="mt-1 text-xs text-white/50">
+							This is generated automatically from the artist
+							name.
+						</p>
+					</div>
+
+					<div>
+						<label
+							class="mb-2 block text-sm font-bold uppercase tracking-widest text-white/70">
+							Artist Logo
+						</label>
+
+						<p class="mb-3 text-xs text-white/50">
+							Upload the band's logo or official artist artwork.
+							Do not upload a festival photo or performance image.
+						</p>
+
+						<input
+							type="file"
+							accept="image/png,image/jpeg,image/webp"
+							@change="onImageSelected"
+							class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+
+						<div v-if="imagePreview" class="mt-4">
+							<p
+								class="mb-2 text-xs uppercase tracking-widest text-white/50">
+								Preview
+							</p>
+
+							<div
+								class="flex h-32 w-32 items-center justify-center border border-white/20 bg-white/5 p-3">
+								<img
+									:src="imagePreview"
+									alt="Artist logo preview"
+									class="max-h-full max-w-full object-contain" />
+							</div>
+						</div>
+					</div>
+
+					<div>
+						<label
+							class="mb-2 block text-sm font-bold uppercase tracking-widest text-white/70">
+							Status
+						</label>
+
+						<select
+							v-model="status"
+							class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white focus:border-darkYellow focus:ring focus:ring-darkYellow/25">
+							<option value="draft">Draft</option>
+
+							<option value="published">Published</option>
+						</select>
+
+						<p class="mt-1 text-xs text-white/50">
+							Draft artists are hidden from public pages.
+						</p>
+					</div>
 
 					<button
 						type="submit"
-						class="inline-flex items-center border border-darkYellow bg-darkYellow px-4 py-2 font-extrabold uppercase tracking-widest text-black hover:bg-lightYellow hover:border-lightYellow">
-						Create Artist
+						:disabled="uploading"
+						class="inline-flex items-center border border-darkYellow bg-darkYellow px-4 py-2 font-extrabold uppercase tracking-widest text-black hover:bg-lightYellow hover:border-lightYellow disabled:opacity-50">
+						{{ uploading ? "Creating..." : "Create Artist" }}
 					</button>
 				</form>
 			</div>
