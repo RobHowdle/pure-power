@@ -31,7 +31,7 @@
 
         background:
             linear-gradient(rgba(0, 0, 0, .72), rgba(0, 0, 0, .82)),
-            url('/smoke.png') center center / cover no-repeat;
+            url('/smoke.webp') center center / cover no-repeat;
 
         z-index: -2;
     }

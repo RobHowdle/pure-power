@@ -303,7 +303,7 @@ function navOrbitStyle(idx, total) {
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	background-image: url("../assets/smoke.png"), url("../assets/smoke.png");
+	background-image: url("/smoke.webp"), url("/smoke.webp");
 	background-repeat: repeat, repeat;
 	background-size:
 		160% 160%,
@@ -372,7 +372,8 @@ a {
 			rgba(0, 0, 0, 0.15) 55%,
 			rgba(0, 0, 0, 0.6) 100%
 		),
-		url("../assets/smoke.png"), url("../assets/smoke.png");
+		url("/smoke.webp"), url("/smoke.webp");
+
 	background-repeat: no-repeat, repeat, repeat;
 	background-size:
 		100% 100%,

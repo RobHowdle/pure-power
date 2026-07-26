@@ -298,7 +298,3 @@ onMounted(async () => {
 	}
 });
 </script>
-
-<style scoped>
-/* Add any styles specific to the home content here. */
-</style>

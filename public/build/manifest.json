@@ -53,25 +53,20 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BlJlGfUg.js",
+    "file": "assets/app-DMRqdguO.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-xXsMpHMv.css",
+      "assets/app-D3gfcNS4.css",
       "assets/app-BrpJEy8G.css"
     ],
     "assets": [
-      "assets/logo-BZ4rQcN0.png",
-      "assets/smoke-D0twUiRm.png"
+      "assets/logo-BZ4rQcN0.png"
     ]
   },
   "resources/js/assets/logo.png": {
     "file": "assets/logo-BZ4rQcN0.png",
     "src": "resources/js/assets/logo.png"
-  },
-  "resources/js/assets/smoke.png": {
-    "file": "assets/smoke-D0twUiRm.png",
-    "src": "resources/js/assets/smoke.png"
   }
 }
