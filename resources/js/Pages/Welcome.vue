@@ -263,23 +263,24 @@ onMounted(async () => {
 						{{ artistsSliderTitle }}
 					</h2>
 					<div class="mb-4 w-full overflow-hidden">
-						<Swiper v-bind="swiperOptions" class="w-full">
-							<SwiperSlide
-								v-for="artist in artists"
-								:key="artist.id"
-								class="!w-[140px] min-[420px]:!w-[160px] sm:!w-[180px]">
-								<img
-									v-if="artist.image_url"
-									:src="artist.image_url"
-									:alt="artist.name || ''"
-									class="w-full h-28 sm:h-40 object-contain rounded-lg" />
-								<div v-else class="w-full h-28 sm:h-40" />
-								<div
-									class="text-center mt-2 text-white text-base font-bold">
-									{{ artist.name }}
-								</div>
-							</SwiperSlide>
-						</Swiper>
+						<SwiperSlide
+							v-for="artist in artists"
+							:key="artist.id"
+							class="w-35! min-[420px]:w-40! sm:w-45!">
+							<img
+								v-if="artist.image_url"
+								:src="artist.image_url"
+								:alt="artist.name || ''"
+								class="w-full aspect-square object-cover rounded-lg shadow-lg" />
+
+							<div
+								v-else
+								class="w-full aspect-square bg-white/5 rounded-lg" />
+
+							<div class="mt-2 text-center text-white font-bold">
+								{{ artist.name }}
+							</div>
+						</SwiperSlide>
 					</div>
 				</div>
 				<div class="flex flex-col items-center pt-8 text-center">
