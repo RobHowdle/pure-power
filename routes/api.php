@@ -6,6 +6,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\GigController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\PublicArtistController;
 use App\Http\Controllers\Api\PublicBlogPostController;
@@ -25,6 +26,9 @@ Route::prefix('admin')->group(function () {
     Route::patch('/artists/{artist}', [ArtistController::class, 'update']);
     Route::delete('/artists/{artist}', [ArtistController::class, 'destroy']);
     Route::patch('/artists/{artist}/toggle-hidden', [ArtistController::class, 'toggleHidden']);
+    Route::post('/artists/{artist}/gallery', [GalleryController::class, 'store']);
+    Route::patch('/gallery/{gallery}', [GalleryController::class, 'update']);
+    Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy']);
 
     /**
      * Gig Admin Routes

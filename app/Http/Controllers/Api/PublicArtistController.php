@@ -21,26 +21,40 @@ class PublicArtistController extends Controller
         );
     }
 
+
     public function show(string $slug): JsonResponse
     {
         $artist = Artist::query()
+            ->with('gallery')
             ->where('is_hidden', false)
             ->where('status', 'published')
             ->where('slug', $slug)
             ->first();
 
         if (!$artist) {
-            return response()->json(['message' => 'Artist not found'], 404);
+            return response()->json([
+                'message' => 'Artist not found'
+            ], 404);
         }
 
-        return response()->json($this->transformArtist($artist, true));
+        return response()->json(
+            $this->transformArtist($artist, true)
+        );
     }
+
 
     private function transformArtist(Artist $artist, bool $withDetails): array
     {
         $data = is_array($artist->data) ? $artist->data : [];
-        $genres = is_array($data['genres'] ?? null) ? $data['genres'] : [];
-        $links = is_array($data['links'] ?? null) ? $data['links'] : [];
+
+        $genres = is_array($data['genres'] ?? null)
+            ? $data['genres']
+            : [];
+
+        $links = is_array($data['links'] ?? null)
+            ? $data['links']
+            : [];
+
 
         $payload = [
             'id' => $artist->id,
@@ -54,14 +68,26 @@ class PublicArtistController extends Controller
             'logo_url' => $artist->logo_url,
         ];
 
+
         if ($withDetails) {
+
             $payload = [
                 ...$payload,
+
                 'location' => $data['location'] ?? null,
+
                 'bio' => $artist->content ?? $artist->excerpt,
-                'images' => is_array($data['images'] ?? null) ? $data['images'] : [],
+
+                'epk_url' => $artist->epk_file,
+
+                'gallery' => $artist->gallery->map(fn($image) => [
+                    'id' => $image->id,
+                    'url' => '/storage/' . $image->image,
+                ])->values(),
+
             ];
         }
+
 
         return $payload;
     }

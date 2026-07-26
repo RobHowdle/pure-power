@@ -21,7 +21,9 @@ class ArtistController extends Controller
 
     public function show(Artist $artist)
     {
-        return response()->json($artist);
+        return response()->json(
+            $artist->load('gallery')
+        );
     }
 
     public function store(Request $request)
@@ -33,10 +35,10 @@ class ArtistController extends Controller
 
             'content' => 'nullable|string',
             'excerpt' => 'nullable|string',
-            'data' => 'nullable',
-
+            'data' => 'nullable|json',
             'image' => 'nullable|image|max:20480',
             'logo' => 'nullable|image|max:20480',
+            'epk' => 'nullable|mimes:pdf|max:51200',
         ]);
 
         $validated['data'] = $request->filled('data')
@@ -64,6 +66,15 @@ class ArtistController extends Controller
             $validated['logo_url'] = Storage::url($path);
         }
 
+        if ($request->hasFile('epk')) {
+
+            $file = $request->file('epk');
+
+            $path = $file->store('artists/epks', 'public');
+
+            $validated['epk_file'] = Storage::url($path);
+            $validated['epk_filename'] = $file->getClientOriginalName();
+        }
 
         $artist = Artist::create($validated);
 
@@ -73,26 +84,34 @@ class ArtistController extends Controller
 
     public function update(Request $request, Artist $artist)
     {
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:artists,slug,' . $artist->id,
             'status' => 'required|in:draft,published',
             'content' => 'nullable|string',
             'data' => 'nullable|json',
+
             'image' => 'nullable|image|max:20480',
             'logo' => 'nullable|image|max:20480',
+            'epk' => 'nullable|mimes:pdf|max:51200',
         ]);
 
         $validated['slug'] = $validated['slug']
             ?: Str::slug($validated['name']);
 
-        // Convert JSON string into an array for the cast
         $validated['data'] = $request->filled('data')
             ? json_decode($request->data, true)
             : null;
 
+        /*
+    |--------------------------------------------------------------------------
+    | Artist Image
+    |--------------------------------------------------------------------------
+    */
+
         if ($request->hasFile('image')) {
+
+            $this->deletePublicFile($artist->image_url);
 
             $path = $request->file('image')
                 ->store('artists', 'public');
@@ -100,13 +119,36 @@ class ArtistController extends Controller
             $validated['image_url'] = Storage::url($path);
         }
 
+        /*
+    |--------------------------------------------------------------------------
+    | Logo
+    |--------------------------------------------------------------------------
+    */
 
         if ($request->hasFile('logo')) {
+
+            $this->deletePublicFile($artist->logo_url);
 
             $path = $request->file('logo')
                 ->store('artists/logos', 'public');
 
             $validated['logo_url'] = Storage::url($path);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | EPK
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->hasFile('epk')) {
+
+            $file = $request->file('epk');
+
+            $path = $file->store('artists/epks', 'public');
+
+            $validated['epk_file'] = Storage::url($path);
+            $validated['epk_filename'] = $file->getClientOriginalName();
         }
 
         $artist->update($validated);
@@ -130,5 +172,16 @@ class ArtistController extends Controller
         $artist->save();
 
         return response()->json($artist);
+    }
+
+    private function deletePublicFile(?string $url): void
+    {
+        if (!$url) {
+            return;
+        }
+
+        Storage::disk('public')->delete(
+            str_replace('/storage/', '', $url)
+        );
     }
 }
