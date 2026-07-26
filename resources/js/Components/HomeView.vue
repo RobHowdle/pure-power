@@ -89,15 +89,18 @@
 							<SwiperSlide
 								v-for="artist in artists"
 								:key="artist.id"
-								class="!w-[140px] min-[420px]:!w-[160px] sm:!w-[180px]">
-								<img
-									v-if="artist.image_url"
-									:src="artist.image_url"
-									:alt="artist.name || ''"
-									class="w-full h-28 sm:h-40 object-contain rounded-lg" />
-								<div v-else class="w-full h-28 sm:h-40" />
+								class="!w-[180px] !h-auto">
 								<div
-									class="text-center mt-2 text-white text-base font-bold">
+									class="aspect-square w-full overflow-hidden rounded-lg">
+									<img
+										v-if="artist.image_url"
+										:src="artist.image_url"
+										:alt="artist.name"
+										class="w-full h-full object-cover" />
+								</div>
+
+								<div
+									class="mt-2 text-center text-white font-bold">
 									{{ artist.name }}
 								</div>
 							</SwiperSlide>
