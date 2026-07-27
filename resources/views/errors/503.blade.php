@@ -103,10 +103,6 @@
         box-shadow: 0 0 10px rgba(216, 168, 75, .5);
     }
     </style>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap" rel="stylesheet">
 </head>
 
 <body>
