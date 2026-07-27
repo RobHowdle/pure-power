@@ -3,12 +3,44 @@
 @config "../../tailwind.config.js";
 @plugin "@tailwindcss/forms";
 
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-VariableFont_wght.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Italic-VariableFont_wght.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'IM Fell DW Pica';
+    src: url('../fonts/IMFellDWPica-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'IM Fell DW Pica';
+    src: url('../fonts/IMFellDWPica-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
 @theme {
     --color-darkYellow: #E58D37;
     --color-lightYellow: #FFB26A;
     --color-lightGrey: #CCCCCC;
 
-    --font-sans: "Montserrat", "Figtree", sans-serif;
+    --font-sans: "Montserrat", sans-serif;
     --font-montserrat: "Montserrat", sans-serif;
     --font-imfell: "IM Fell DW Pica", serif;
 }
@@ -24,6 +56,11 @@ body {
     font-family: "Montserrat", sans-serif;
 }
 
-h1,h2,h3,h4,h5,h6 {
-    font-family: var(--font-imfell);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "IM Fell DW Pica", serif;
 }

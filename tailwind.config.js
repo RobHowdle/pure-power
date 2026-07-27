@@ -23,9 +23,8 @@ export default {
 				darkYellow: "#E58D37",
 			},
 			fontFamily: {
-				imfell: ["IM Fell DW Pica", "serif"],
-				montserrat: ["Montserrat", "sans-serif"],
-				cormorant: ["Cormorant Garamond", "serif"],
+				sans: ["Montserrat", "sans-serif"],
+				serif: ["IM Fell DW Pica", "serif"],
 			},
 		},
 	},

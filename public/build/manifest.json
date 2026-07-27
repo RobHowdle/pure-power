@@ -44,25 +44,39 @@
     "src": "_montserrat-700-normal-BdjcYUrC.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CY8l475I.css",
+    "file": "assets/app-D0i_aMiy.css",
     "name": "app",
     "names": [
       "app.css"
     ],
     "src": "resources/css/app.css",
-    "isEntry": true
+    "isEntry": true,
+    "assets": [
+      "assets/IMFellDWPica-Regular-BoT0G5DK.woff2",
+      "assets/IMFellDWPica-Italic-BYtc5EQo.woff2"
+    ]
+  },
+  "resources/fonts/IMFellDWPica-Italic.woff2": {
+    "file": "assets/IMFellDWPica-Italic-BYtc5EQo.woff2",
+    "src": "resources/fonts/IMFellDWPica-Italic.woff2"
+  },
+  "resources/fonts/IMFellDWPica-Regular.woff2": {
+    "file": "assets/IMFellDWPica-Regular-BoT0G5DK.woff2",
+    "src": "resources/fonts/IMFellDWPica-Regular.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-Chut7Hpt.js",
+    "file": "assets/app-BT1pp-cO.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
       "assets/app-D3gfcNS4.css",
-      "assets/app-CY8l475I.css"
+      "assets/app-D0i_aMiy.css"
     ],
     "assets": [
-      "assets/logo-BZ4rQcN0.png"
+      "assets/logo-BZ4rQcN0.png",
+      "assets/IMFellDWPica-Regular-BoT0G5DK.woff2",
+      "assets/IMFellDWPica-Italic-BYtc5EQo.woff2"
     ]
   },
   "resources/js/assets/logo.png": {
