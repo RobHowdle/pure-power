@@ -93,8 +93,8 @@
 								<div
 									class="aspect-square w-full overflow-hidden rounded-lg">
 									<img
-										v-if="artist.image_url"
-										:src="artist.image_url"
+										v-if="artist.logo_url"
+										:src="artist.logo_url"
 										:alt="artist.name"
 										class="w-full h-full object-cover" />
 								</div>

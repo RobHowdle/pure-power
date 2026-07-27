@@ -224,7 +224,9 @@ class ArtistController extends Controller
 
         $filename = Str::uuid() . '.webp';
 
-        $path = storage_path("app/public/{$directory}");
+        $path = storage_path(
+            "app/public/{$directory}/thumbs"
+        );
 
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
@@ -235,13 +237,15 @@ class ArtistController extends Controller
         );
 
         $manager->decode($file)
-            ->cover(800, 800)
-            ->encode(new WebpEncoder(quality: 80))
+            ->cover(400, 300)
+            ->encode(new WebpEncoder(quality: 75))
             ->save(
                 "{$path}/{$filename}"
             );
 
-        return Storage::url("{$directory}/{$filename}");
+        return Storage::url(
+            "{$directory}/thumbs/{$filename}"
+        );
     }
 
 
