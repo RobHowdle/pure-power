@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class GigController extends Controller
@@ -53,9 +54,10 @@ class GigController extends Controller
 
         $payload['data'] = $data;
 
-        return response()->json(
-            Gig::create($payload)
-        );
+        $gig = Gig::create($payload);
+        Cache::forget('public.gigs.latest');
+
+        return response()->json($gig);
     }
 
 
@@ -104,6 +106,7 @@ class GigController extends Controller
 
 
         $gig->update($payload);
+        Cache::forget('public.gigs.latest');
 
 
         return response()->json(
@@ -115,6 +118,7 @@ class GigController extends Controller
     public function destroy(Gig $gig)
     {
         $gig->delete();
+        Cache::forget('public.gigs.latest');
 
         return response()->json([
             'message' => 'Gig deleted'
@@ -126,6 +130,7 @@ class GigController extends Controller
     {
         $gig->is_hidden = !$gig->is_hidden;
         $gig->save();
+        Cache::forget('public.gigs.latest');
 
         return response()->json($gig);
     }

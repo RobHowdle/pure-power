@@ -7,101 +7,101 @@
     <title>Pure Power | Maintenance</title>
 
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    html,
-    body {
-        height: 100%;
-    }
+        html,
+        body {
+            height: 100%;
+        }
 
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #000;
-        color: #fff;
-        overflow: hidden;
-    }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
 
-    .background {
-        position: fixed;
-        inset: 0;
+        .background {
+            position: fixed;
+            inset: 0;
 
-        background:
-            linear-gradient(rgba(0, 0, 0, .72), rgba(0, 0, 0, .82)),
-            url('/smoke.webp') center center / cover no-repeat;
+            background:
+                linear-gradient(rgba(0, 0, 0, .72), rgba(0, 0, 0, .82)),
+                url('/smoke.png') center center / cover no-repeat;
 
-        z-index: -2;
-    }
+            z-index: -2;
+        }
 
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, .35);
-        z-index: -1;
-    }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .35);
+            z-index: -1;
+        }
 
-    .container {
-        min-height: 100vh;
+        .container {
+            min-height: 100vh;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        text-align: center;
+            text-align: center;
 
-        padding: 2rem;
-    }
+            padding: 2rem;
+        }
 
-    .content {
-        max-width: 700px;
-    }
+        .content {
+            max-width: 700px;
+        }
 
-    .logo {
-        width: 220px;
-        max-width: 70%;
-        margin-bottom: 2rem;
-    }
+        .logo {
+            width: 220px;
+            max-width: 70%;
+            margin-bottom: 2rem;
+        }
 
-    h1 {
-        font-family: "IM FELL English SC", serif;
-        font-size: clamp(3rem, 6vw, 5rem);
-        letter-spacing: .18em;
-        color: #d8a84b;
-        text-transform: uppercase;
+        h1 {
+            font-family: "IM FELL English SC", serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            letter-spacing: .18em;
+            color: #d8a84b;
+            text-transform: uppercase;
 
-        text-shadow:
-            0 0 8px rgba(216, 168, 75, .4),
-            2px 2px 0 #555;
+            text-shadow:
+                0 0 8px rgba(216, 168, 75, .4),
+                2px 2px 0 #555;
 
-        margin-bottom: .75rem;
-    }
+            margin-bottom: .75rem;
+        }
 
-    h2 {
-        font-size: 1.6rem;
-        font-weight: 600;
-        color: #ffffff;
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #ffffff;
 
-        margin-bottom: 1.5rem;
-    }
+            margin-bottom: 1.5rem;
+        }
 
-    p {
-        color: #d4d4d4;
-        line-height: 1.8;
-        font-size: 1rem;
-        max-width: 600px;
-        margin: auto;
-    }
+        p {
+            color: #d4d4d4;
+            line-height: 1.8;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: auto;
+        }
 
-    .divider {
-        width: 120px;
-        height: 2px;
-        background: #d8a84b;
-        margin: 2rem auto;
-        box-shadow: 0 0 10px rgba(216, 168, 75, .5);
-    }
+        .divider {
+            width: 120px;
+            height: 2px;
+            background: #d8a84b;
+            margin: 2rem auto;
+            box-shadow: 0 0 10px rgba(216, 168, 75, .5);
+        }
     </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

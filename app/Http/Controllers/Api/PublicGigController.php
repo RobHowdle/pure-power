@@ -6,30 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Models\Gig;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PublicGigController extends Controller
 {
     public function latest(): JsonResponse
     {
-        $base = $this->baseQuery();
+        $gig = Cache::remember('public.gigs.latest', now()->addMinutes(5), function () {
+            $base = $this->baseQuery();
 
-        $upcoming = (clone $base)
-            ->whereNotNull('starts_at')
-            ->where('starts_at', '>=', now())
-            ->orderBy('starts_at')
-            ->first();
+            return (clone $base)
+                ->whereNotNull('starts_at')
+                ->where('starts_at', '>=', now())
+                ->orderBy('starts_at')
+                ->first()
+                ?? (clone $base)
+                    ->orderByDesc('starts_at')
+                    ->orderByDesc('created_at')
+                    ->first();
+        });
 
-        $gig = $upcoming
-            ?? (clone $base)
-            ->orderByDesc('starts_at')
-            ->orderByDesc('created_at')
-            ->first();
-
-        if (!$gig) {
-            return response()->json(null);
-        }
-
-        return response()->json($this->transformGig($gig));
+        return response()->json($gig ? $this->transformGig($gig) : null);
     }
 
     public function upcoming(Request $request): JsonResponse

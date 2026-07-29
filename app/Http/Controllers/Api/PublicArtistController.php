@@ -5,20 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Artist;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class PublicArtistController extends Controller
 {
     public function index(): JsonResponse
     {
-        $artists = Artist::query()
-            ->where('is_hidden', false)
-            ->where('status', 'published')
-            ->orderBy('name')
-            ->get();
+        $artists = Cache::remember('public.artists.index', now()->addMinutes(5), function () {
+            return Artist::query()
+                ->where('is_hidden', false)
+                ->where('status', 'published')
+                ->orderBy('name')
+                ->get()
+                ->map(fn(Artist $artist) => $this->transformArtist($artist, false))
+                ->values()
+                ->all();
+        });
 
-        return response()->json(
-            $artists->map(fn(Artist $artist) => $this->transformArtist($artist, false))
-        );
+        return response()->json($artists);
     }
 
 

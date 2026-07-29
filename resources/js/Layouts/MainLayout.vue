@@ -33,7 +33,7 @@
 				@click="mobileNavOpen = false"></div>
 
 			<nav
-				class="absolute right-0 top-0 h-full w-80 max-w-[85vw] border-l border-white/20 bg-black/90 transition-transform duration-300"
+				class="mobile-nav-drawer absolute right-0 top-0 h-full w-80 max-w-[85vw] border-l border-white/20 transition-transform duration-300"
 				:class="mobileNavOpen ? 'translate-x-0' : 'translate-x-full'"
 				aria-label="Mobile navigation">
 				<div class="relative h-full overflow-hidden p-6">
@@ -43,14 +43,14 @@
 						class="absolute -right-32 top-1/2 -translate-y-1/2 w-[520px] scale-125 opacity-10 select-none pointer-events-none" />
 
 					<div
-						class="relative flex items-start justify-between gap-4">
+						class="mobile-nav-header relative flex items-start justify-between gap-4">
 						<div
 							class="text-darkYellow font-imfell uppercase tracking-wide text-base sm:text-lg leading-snug break-words">
 							Pure Power Darkside Management
 						</div>
 						<button
 							type="button"
-							class="inline-flex items-center justify-center w-10 h-10 border border-white/25 bg-black/40 text-white hover:text-lightGrey transition"
+							class="inline-flex items-center justify-center w-10 h-10 border border-white/25 bg-black/40 text-white hover:border-darkYellow/70 hover:text-darkYellow transition"
 							aria-label="Close navigation"
 							@click="mobileNavOpen = false">
 							<svg
@@ -67,18 +67,29 @@
 						</button>
 					</div>
 
-					<div class="relative mt-8 flex flex-col gap-5">
+					<div class="relative mt-8 flex flex-col gap-3">
 						<router-link
-							v-for="item in navItems"
+							v-for="(item, index) in navItems"
 							:key="item.text"
 							:to="item.slug === 'home' ? '/' : '/' + item.slug"
+							class="mobile-nav-link group flex items-center justify-between border px-4 py-3"
 							:class="
 								isActive(item.slug)
-									? 'uppercase text-xl tracking-wide font-extrabold font-imfell text-darkYellow transition'
-									: 'uppercase text-xl tracking-wide font-extrabold font-imfell text-white hover:text-lightGrey transition'
+									? 'border-darkYellow/70 bg-darkYellow/10 uppercase text-xl tracking-wide font-extrabold font-imfell text-darkYellow transition'
+									: 'border-white/10 bg-black/25 uppercase text-xl tracking-wide font-extrabold font-imfell text-white hover:text-lightGrey transition'
 							"
 							@click="mobileNavOpen = false">
-							{{ item.text }}
+							<span class="flex items-center gap-3">
+								<span class="text-xs font-montserrat text-darkYellow/70">0{{ index + 1 }}</span>
+								{{ item.text }}
+							</span>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								class="mobile-nav-arrow h-4 w-4"
+								aria-hidden="true">
+								<path d="M5 12h13M14 7l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+							</svg>
 						</router-link>
 					</div>
 				</div>
@@ -303,7 +314,7 @@ function navOrbitStyle(idx, total) {
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	background-image: url("/smoke.webp"), url("/smoke.webp");
+	background-image: url("/smoke.png"), url("/smoke.png");
 	background-repeat: repeat, repeat;
 	background-size:
 		160% 160%,
@@ -334,6 +345,68 @@ a {
 	text-shadow: 0 2px 8px #000;
 }
 
+.mobile-nav-drawer {
+	background:
+		linear-gradient(160deg, rgba(229, 141, 55, 0.14), transparent 34%),
+		rgba(5, 5, 5, 0.96);
+	box-shadow: -24px 0 60px rgba(0, 0, 0, 0.48);
+}
+
+.mobile-nav-drawer::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 22%);
+}
+
+.mobile-nav-header {
+	padding-bottom: 1.5rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mobile-nav-link {
+	position: relative;
+	overflow: hidden;
+	min-height: 3.5rem;
+	transition:
+		transform 180ms ease,
+		border-color 180ms ease,
+		background-color 180ms ease;
+}
+
+.mobile-nav-link::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 2px;
+	background: #e58d37;
+	transform: scaleY(0);
+	transition: transform 180ms ease;
+}
+
+.mobile-nav-link:hover {
+	transform: translateX(-4px);
+	border-color: rgba(229, 141, 55, 0.55);
+	background: rgba(229, 141, 55, 0.1);
+}
+
+.mobile-nav-link:hover::before,
+.mobile-nav-link.router-link-active::before {
+	transform: scaleY(1);
+}
+
+.mobile-nav-arrow {
+	color: rgba(229, 141, 55, 0.75);
+	transition: transform 180ms ease;
+}
+
+.mobile-nav-link:hover .mobile-nav-arrow {
+	transform: translateX(3px);
+}
+
 .view-stage {
 	position: relative;
 	flex: 1;
@@ -346,11 +419,13 @@ a {
 	align-items: stretch;
 	width: 100%;
 	max-width: 100%;
+	height: 100%;
 }
 
 .route-shell {
 	flex: 1;
 	min-height: 0;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -372,7 +447,7 @@ a {
 			rgba(0, 0, 0, 0.15) 55%,
 			rgba(0, 0, 0, 0.6) 100%
 		),
-		url("/smoke.webp"), url("/smoke.webp");
+		url("/smoke.png"), url("/smoke.png");
 
 	background-repeat: no-repeat, repeat, repeat;
 	background-size:

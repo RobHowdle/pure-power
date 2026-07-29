@@ -82,7 +82,7 @@ async function logout() {
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	background-image: url("/smoke.webp"), url("/smoke.webp");
+	background-image: url("/smoke.png"), url("/smoke.png");
 	background-repeat: repeat, repeat;
 	background-size:
 		160% 160%,

@@ -6,6 +6,7 @@ use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\WebpEncoder;
@@ -100,6 +101,7 @@ class ArtistController extends Controller
 
 
         $artist = Artist::create($validated);
+        Cache::forget('public.artists.index');
 
         return response()->json($artist);
     }
@@ -181,6 +183,7 @@ class ArtistController extends Controller
 
 
         $artist->update($validated);
+        Cache::forget('public.artists.index');
 
         return response()->json($artist->fresh());
     }
@@ -189,6 +192,7 @@ class ArtistController extends Controller
     public function destroy(Artist $artist)
     {
         $artist->delete();
+        Cache::forget('public.artists.index');
 
         return response()->json([
             'message' => 'Artist deleted'
@@ -200,6 +204,7 @@ class ArtistController extends Controller
     {
         $artist->is_hidden = !$artist->is_hidden;
         $artist->save();
+        Cache::forget('public.artists.index');
 
         return response()->json($artist);
     }

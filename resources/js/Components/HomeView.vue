@@ -1,14 +1,15 @@
 <template>
 	<main
-		class="flex-1 flex flex-col justify-start md:justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
-		<h1
-			class="text-3xl sm:text-4xl lg:text-5xl leading-tight font-bold text-darkYellow mb-6 tracking-wide font-imfell uppercase text-shadow-lightGrey break-words">
-			{{ homeTitleText }}
-		</h1>
-		<div
-			class="grid gap-8 items-stretch md:grid-cols-2 min-[2300px]:grid-cols-3 w-full max-w-full min-w-0">
+		class="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
+		<div class="w-full max-w-[1600px] mx-auto min-w-0">
+			<h1
+				class="text-3xl sm:text-4xl lg:text-5xl leading-tight font-bold text-darkYellow mb-6 tracking-wide font-imfell uppercase text-shadow-lightGrey break-words">
+				{{ homeTitleText }}
+			</h1>
 			<div
-				class="border border-white p-4 sm:p-6 bg-black bg-opacity-70 text-base sm:text-lg lg:text-2xl font-montserrat text-lightGrey break-words md:col-span-2 min-[2300px]:col-span-1 min-[2300px]:h-full w-full max-w-full min-w-0">
+				class="home-content-grid grid w-full gap-8 items-stretch md:grid-cols-2">
+			<div
+				class="home-intro border border-white p-4 sm:p-6 bg-black bg-opacity-70 text-base sm:text-lg lg:text-2xl font-montserrat text-lightGrey break-words md:col-span-2 w-full max-w-full min-w-0">
 				<p
 					v-for="(paragraph, idx) in homeIntroParagraphs"
 					:key="idx"
@@ -20,17 +21,22 @@
 			</div>
 
 			<div
-				v-if="hasLatestGigWidget"
-				class="border border-white bg-charcoal flex flex-col md:self-start min-[2300px]:self-stretch min-[2300px]:h-full w-full max-w-full min-w-0"
+				v-if="showLatestGigWidget"
+				class="home-latest-gig border border-white bg-charcoal flex flex-col md:self-start w-full max-w-full min-w-0"
 				style="box-shadow: 0 0 24px 0 #000">
+				<div
+					v-if="isHomeLoading"
+					class="home-gig-skeleton w-full min-h-52 md:h-52 md:flex-none"
+					aria-hidden="true"></div>
 				<img
+					v-else
 					:src="latestGigImageUrl"
 					:alt="
 						hasRealLatestGig
 							? 'Latest gig image'
 							: 'No gig announced placeholder image'
 					"
-					class="w-full min-h-52 object-cover md:h-52 md:flex-none min-[2300px]:h-auto min-[2300px]:flex-1"
+					class="home-latest-gig-image w-full min-h-52 object-cover md:h-52 md:flex-none"
 					:class="hasRealLatestGig ? '' : 'grayscale opacity-70'"
 					@error="onLatestGigImageError" />
 				<div class="px-6 py-6 text-center flex flex-col shrink-0">
@@ -74,9 +80,9 @@
 			</div>
 
 			<div
-				class="flex flex-col md:h-full min-[2300px]:h-auto md:justify-between w-full max-w-full min-w-0">
+				class="home-sidebar flex flex-col md:h-full md:justify-between w-full max-w-full min-w-0">
 				<div
-					v-if="hasArtistsSliderWidget"
+					v-if="showArtistsSliderWidget"
 					class="border border-white bg-black bg-opacity-70 p-4 sm:p-6 flex flex-col overflow-hidden"
 					style="box-shadow: 0 0 24px 0 #000">
 					<h2
@@ -85,11 +91,14 @@
 						{{ artistsSliderTitle }}
 					</h2>
 					<div class="mb-4 w-full overflow-hidden">
-						<Swiper v-bind="swiperOptions" class="w-full">
+						<Swiper
+							v-if="artists.length"
+							v-bind="swiperOptions"
+							class="home-artists-swiper w-full">
 							<SwiperSlide
 								v-for="artist in artists"
 								:key="artist.id"
-								class="!w-[180px] !h-auto">
+								class="home-artist-slide !w-[180px] !h-auto">
 								<div
 									class="aspect-square w-full overflow-hidden rounded-lg">
 									<img
@@ -105,6 +114,15 @@
 								</div>
 							</SwiperSlide>
 						</Swiper>
+						<div
+							v-else
+							class="grid grid-cols-2 gap-6"
+							aria-label="Loading artists">
+							<div v-for="index in 2" :key="index">
+								<div class="home-artist-skeleton aspect-square rounded-lg"></div>
+								<div class="home-artist-skeleton mt-2 h-4 w-3/4 mx-auto"></div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="flex flex-col items-center pt-8 text-center">
@@ -121,26 +139,84 @@
 				</div>
 			</div>
 		</div>
+		</div>
 	</main>
 </template>
+
+<style scoped>
+.home-gig-skeleton,
+.home-artist-skeleton {
+	background: linear-gradient(110deg, #252525 25%, #353535 37%, #252525 63%);
+	background-size: 200% 100%;
+	animation: home-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes home-skeleton-shimmer {
+	to {
+		background-position-x: -200%;
+	}
+}
+
+@media (min-width: 2000px) {
+	.home-content-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.home-intro {
+		grid-column: span 1 / span 1;
+		height: 100%;
+	}
+
+	.home-latest-gig {
+		align-self: stretch;
+		height: 100%;
+	}
+
+	.home-latest-gig-image {
+		flex: 1;
+		height: auto;
+	}
+
+	.home-sidebar {
+		height: auto;
+	}
+
+	.home-artist-slide {
+		width: calc((100% - 1rem) / 2) !important;
+	}
+}
+</style>
 
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import {Swiper, SwiperSlide} from "swiper/vue";
+import {Grid} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/navigation";
 
 const swiperOptions = {
 	slidesPerView: "auto",
-	loop: true,
+	loop: false,
 	spaceBetween: 24,
 	navigation: false,
+	modules: [Grid],
+	breakpoints: {
+		2000: {
+			slidesPerView: 2,
+			spaceBetween: 16,
+			grid: {
+				rows: 2,
+				fill: "row",
+			},
+		},
+	},
 };
 
 const blocks = ref([]);
 const latestGig = ref(null);
 const artists = ref([]);
+const isHomeLoading = ref(true);
 const apiOrigin =
 	import.meta.env.VITE_API_BASE_URL ||
 	import.meta.env.VITE_API_PROXY_TARGET ||
@@ -172,6 +248,12 @@ const hasLatestGigWidget = computed(() =>
 );
 const hasArtistsSliderWidget = computed(() =>
 	blocks.value.some((b) => b.type === "artists_slider"),
+);
+const showLatestGigWidget = computed(
+	() => isHomeLoading.value || hasLatestGigWidget.value,
+);
+const showArtistsSliderWidget = computed(
+	() => isHomeLoading.value || hasArtistsSliderWidget.value,
 );
 const latestGigBlock = computed(
 	() => blocks.value.find((b) => b.type === "latest_gig") || null,
@@ -205,16 +287,14 @@ const latestGigImageUrl = computed(() => {
 		return `${apiOrigin}/${posterUrl}`;
 	}
 
-	return (
-		latestGigBlock.value?.props?.fallbackImageUrl || "/src/assets/logo.png"
-	);
+	return latestGigBlock.value?.props?.fallbackImageUrl || "/logo.png";
 });
 
 function onLatestGigImageError(event) {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.png")) return;
-	img.src = "/src/assets/logo.png";
+	if (img.src.endsWith("/logo.png")) return;
+	img.src = "/logo.png";
 }
 
 const latestGigTitle = computed(() => {
@@ -286,15 +366,11 @@ async function fetchArtists() {
 }
 
 onMounted(async () => {
-	try {
-		await fetchHomeBlocks();
-
-		const jobs = [];
-		if (hasLatestGigWidget.value) jobs.push(fetchLatestGig());
-		if (hasArtistsSliderWidget.value) jobs.push(fetchArtists());
-		await Promise.all(jobs);
-	} catch {
-		// Keep the homepage usable even if APIs fail.
-	}
+	await Promise.allSettled([
+		fetchHomeBlocks(),
+		fetchLatestGig(),
+		fetchArtists(),
+	]);
+	isHomeLoading.value = false;
 });
 </script>
