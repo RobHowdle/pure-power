@@ -28,6 +28,7 @@ const MAJOR_SOCIALS = [
 	{key: "soundcloud", label: "SoundCloud"},
 	{key: "x", label: "X"},
 	{key: "website", label: "Website"},
+	{key: "bandcamp", label: "Bandcamp"},
 ];
 
 const mapLinksByPlatform = (links) => {
