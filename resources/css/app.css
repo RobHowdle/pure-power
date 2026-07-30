@@ -64,3 +64,17 @@ h5,
 h6 {
     font-family: "IM Fell DW Pica", serif;
 }
+
+@layer base {
+	input,
+	textarea,
+	select {
+		color-scheme: dark;
+	}
+}
+
+input,
+textarea,
+select {
+	color-scheme: dark;
+}

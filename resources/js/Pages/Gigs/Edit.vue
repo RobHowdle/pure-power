@@ -1,7 +1,13 @@
 <script setup>
 import axios from "axios";
-import {ref, onMounted, watch} from "vue";
+import {ref, onMounted, watch, computed} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import {toast} from "vue-sonner";
+
+import LoadingSpinner from "@/Components/LoadingSpinner.vue";
+import ConfirmModal from "@/Components/ConfirmModal.vue";
+
+import {handleApiError} from "@/helpers/apiError";
 
 const route = useRoute();
 const vueRouter = useRouter();
@@ -27,6 +33,8 @@ const content = ref("");
 const posterImageFile = ref(null);
 
 const slugManuallyEdited = ref(false);
+
+const showConfirmModal = ref(false);
 
 const slugify = (value) =>
 	String(value ?? "")
@@ -136,22 +144,55 @@ const save = async () => {
 			},
 		});
 
+		toast.success("Gig saved!");
+
 		vueRouter.push("/admin/gigs");
 	} catch (error) {
 		if (error.response?.status === 422) {
 			errors.value = error.response.data.errors;
 		}
-
-		console.error(error);
+		toast.error("Unable to save gig.");
 	}
 };
 
+const deleteMessage = computed(() => {
+	if (!gig.value) {
+		return "Are you sure you want to continue?";
+	}
+
+	return `Are you sure you want to delete ${gig.value.title}? This cannot be undone.`;
+});
+
 const destroy = async () => {
-	if (!confirm(`Delete "${gig.value.title}"?`)) return;
+	if (!gig.value) return;
 
-	await axios.delete(`/api/admin/gigs/${gig.value.id}`);
+	try {
+		await toast.promise(axios.delete(`/api/admin/gigs/${gig.value.id}`), {
+			loading: "Deleting gig...",
+			success: "Gig deleted successfully!",
+			error: "Unable to delete gig.",
+		});
 
-	vueRouter.push("/admin/gigs");
+		vueRouter.push("/admin/gigs");
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const confirmDelete = () => {
+	if (!gig.value) return;
+
+	showConfirmModal.value = true;
+};
+
+const cancelDelete = () => {
+	showConfirmModal.value = false;
+};
+
+const confirmDestroy = async () => {
+	showConfirmModal.value = false;
+
+	await destroy();
 };
 
 onMounted(() => {
@@ -160,8 +201,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<div v-if="!gig" class="py-12 text-white">Loading gig...</div>
-
+	<LoadingSpinner v-if="!gig" message="Loading gig..." />
 	<div v-else class="py-12">
 		<div class="mx-auto max-w-5xl sm:px-6 lg:px-8">
 			<div
@@ -332,7 +372,7 @@ onMounted(() => {
 
 						<button
 							type="button"
-							@click="destroy"
+							@click="confirmDelete"
 							class="inline-flex items-center border border-red-500/70 bg-red-500/15 px-4 py-2 text-xs font-extrabold uppercase tracking-widest text-red-200 hover:bg-red-500/25 hover:text-red-100">
 							Delete
 						</button>
@@ -341,4 +381,13 @@ onMounted(() => {
 			</div>
 		</div>
 	</div>
+	<ConfirmModal
+		v-if="gig"
+		:open="showConfirmModal"
+		title="Delete Gig"
+		:message="deleteMessage"
+		confirmText="Delete"
+		variant="danger"
+		@cancel="cancelDelete"
+		@confirm="confirmDestroy" />
 </template>

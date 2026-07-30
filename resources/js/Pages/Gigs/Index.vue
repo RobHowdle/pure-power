@@ -3,6 +3,11 @@ import axios from "axios";
 import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
+import LoadingSpinner from "@/Components/LoadingSpinner.vue";
+import ConfirmModal from "@/Components/ConfirmModal.vue";
+
+import {handleApiError} from "@/helpers/apiError";
+
 const vueRouter = useRouter();
 
 const gigs = ref([]);
@@ -89,12 +94,17 @@ const createGig = async () => {
 		artistsPlaying.value = "";
 		content.value = "";
 		posterImageFile.value = null;
+
+		toast.success("Gig created successfully!");
 	} catch (error) {
 		if (error.response?.status === 422) {
 			errors.value = error.response.data.errors;
+
+			toast.error("Please check the form for errors.");
+			return;
 		}
 
-		console.error(error);
+		handleApiError(error, "Unable to create gig.");
 	}
 };
 
@@ -113,11 +123,19 @@ const editGig = (gig) => {
 };
 
 const deleteGig = async (gig) => {
-	if (!confirm(`Delete "${gig.title}"?`)) return;
+	if (!gig.value) return;
 
-	await axios.delete(`/api/admin/gigs/${gig.id}`);
+	try {
+		await toast.promise(axios.delete(`/api/admin/gigs/${gig.value.id}`), {
+			loading: "Deleting gig...",
+			success: "Gig deleted successfully!",
+			error: "Unable to delete gig.",
+		});
 
-	await loadGigs();
+		await loadGigs();
+	} catch (error) {
+		handleApiError(error);
+	}
 };
 
 onMounted(() => {

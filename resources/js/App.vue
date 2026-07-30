@@ -1,6 +1,7 @@
 <script setup>
 import {computed} from "vue";
 import {useRoute} from "vue-router";
+import {Toaster} from "vue-sonner";
 
 import MainLayout from "./Layouts/MainLayout.vue";
 import AuthenticatedLayout from "./Layouts/AuthenticatedLayout.vue";
@@ -17,6 +18,7 @@ const layout = computed(() => {
 <template>
 	<component :is="layout">
 		<router-view />
+		<Toaster position="bottom-right" richColors />
 	</component>
 </template>
 <style>
