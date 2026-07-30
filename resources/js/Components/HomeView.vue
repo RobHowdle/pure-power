@@ -8,137 +8,141 @@
 			</h1>
 			<div
 				class="home-content-grid grid w-full gap-8 items-stretch md:grid-cols-2">
-			<div
-				class="home-intro border border-white p-4 sm:p-6 bg-black bg-opacity-70 text-base sm:text-lg lg:text-2xl font-montserrat text-lightGrey break-words md:col-span-2 w-full max-w-full min-w-0">
-				<p
-					v-for="(paragraph, idx) in homeIntroParagraphs"
-					:key="idx"
-					:class="
-						idx !== homeIntroParagraphs.length - 1 ? 'mb-2' : ''
-					">
-					{{ paragraph }}
-				</p>
-			</div>
-
-			<div
-				v-if="showLatestGigWidget"
-				class="home-latest-gig border border-white bg-charcoal flex flex-col md:self-start w-full max-w-full min-w-0"
-				style="box-shadow: 0 0 24px 0 #000">
 				<div
-					v-if="isHomeLoading"
-					class="home-gig-skeleton w-full min-h-52 md:h-52 md:flex-none"
-					aria-hidden="true"></div>
-				<img
-					v-else
-					:src="latestGigImageUrl"
-					:alt="
-						hasRealLatestGig
-							? 'Latest gig image'
-							: 'No gig announced placeholder image'
-					"
-					class="home-latest-gig-image w-full min-h-52 object-cover md:h-52 md:flex-none"
-					:class="hasRealLatestGig ? '' : 'grayscale opacity-70'"
-					@error="onLatestGigImageError" />
-				<div class="px-6 py-6 text-center flex flex-col shrink-0">
-					<h2
-						class="font-bold text-lg sm:text-xl mb-2 text-center text-white font-imfell"
-						style="text-shadow: 0 0 8px #000">
-						{{ latestGigTitle }}
-					</h2>
+					class="home-intro border border-white p-4 sm:p-6 bg-black bg-opacity-70 text-base sm:text-lg lg:text-2xl font-montserrat text-lightGrey break-words md:col-span-2 w-full max-w-full min-w-0">
 					<p
-						class="text-darkYellow text-base font-bold mb-1 font-montserrat">
-						{{ latestGigDate }}
-					</p>
-					<p
-						class="text-base text-darkYellow font-bold mb-2 font-montserrat">
-						{{ latestGigLocation }}
-					</p>
-					<p
-						class="text-xs text-white mb-4 font-montserrat"
+						v-for="(paragraph, idx) in homeIntroParagraphs"
+						:key="idx"
 						:class="
-							hasRealLatestGig ? '' : 'uppercase tracking-wide'
+							idx !== homeIntroParagraphs.length - 1 ? 'mb-2' : ''
 						">
-						{{ latestGigExcerpt }}
+						{{ paragraph }}
 					</p>
-					<a
-						v-if="latestGigTicketUrl"
-						:href="latestGigTicketUrl"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
-						style="box-shadow: 0 0 8px #f97316">
-						{{ latestGigTicketLabel }}
-					</a>
-					<button
-						v-else
-						class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold opacity-60 cursor-not-allowed"
-						style="box-shadow: 0 0 8px #f97316"
-						disabled>
-						{{ latestGigTicketLabel }}
-					</button>
 				</div>
-			</div>
 
-			<div
-				class="home-sidebar flex flex-col md:h-full md:justify-between w-full max-w-full min-w-0">
 				<div
-					v-if="showArtistsSliderWidget"
-					class="border border-white bg-black bg-opacity-70 p-4 sm:p-6 flex flex-col overflow-hidden"
+					v-if="showLatestGigWidget"
+					class="home-latest-gig border border-white bg-charcoal flex flex-col md:self-start w-full max-w-full min-w-0"
 					style="box-shadow: 0 0 24px 0 #000">
-					<h2
-						class="font-bold text-2xl sm:text-3xl mb-6 sm:mb-8 text-darkYellow font-imfell text-center"
-						style="text-shadow: 0 0 12px #f97316">
-						{{ artistsSliderTitle }}
-					</h2>
-					<div class="mb-4 w-full overflow-hidden">
-						<Swiper
-							v-if="artists.length"
-							v-bind="swiperOptions"
-							class="home-artists-swiper w-full">
-							<SwiperSlide
-								v-for="artist in artists"
-								:key="artist.id"
-								class="home-artist-slide !w-[180px] !h-auto">
-								<div
-									class="aspect-square w-full overflow-hidden rounded-lg">
-									<img
-										v-if="artist.logo_url"
-										:src="artist.logo_url"
-										:alt="artist.name"
-										class="w-full h-full object-cover" />
-								</div>
-
-								<div
-									class="mt-2 text-center text-white font-bold">
-									{{ artist.name }}
-								</div>
-							</SwiperSlide>
-						</Swiper>
-						<div
+					<div
+						v-if="isHomeLoading"
+						class="home-gig-skeleton w-full min-h-52 md:h-52 md:flex-none"
+						aria-hidden="true"></div>
+					<img
+						v-else
+						:src="latestGigImageUrl"
+						:alt="
+							hasRealLatestGig
+								? 'Latest gig image'
+								: 'No gig announced placeholder image'
+						"
+						class="home-latest-gig-image w-full min-h-52 object-cover md:h-52 md:flex-none"
+						:class="hasRealLatestGig ? '' : 'grayscale opacity-70'"
+						@error="onLatestGigImageError" />
+					<div class="px-6 py-6 text-center flex flex-col shrink-0">
+						<h2
+							class="font-bold text-lg sm:text-xl mb-2 text-center text-white font-imfell"
+							style="text-shadow: 0 0 8px #000">
+							{{ latestGigTitle }}
+						</h2>
+						<p
+							class="text-darkYellow text-base font-bold mb-1 font-montserrat">
+							{{ latestGigDate }}
+						</p>
+						<p
+							class="text-base text-darkYellow font-bold mb-2 font-montserrat">
+							{{ latestGigLocation }}
+						</p>
+						<p
+							class="text-xs text-white mb-4 font-montserrat"
+							:class="
+								hasRealLatestGig
+									? ''
+									: 'uppercase tracking-wide'
+							">
+							{{ latestGigExcerpt }}
+						</p>
+						<a
+							v-if="latestGigTicketUrl"
+							:href="latestGigTicketUrl"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
+							style="box-shadow: 0 0 8px #f97316">
+							{{ latestGigTicketLabel }}
+						</a>
+						<button
 							v-else
-							class="grid grid-cols-2 gap-6"
-							aria-label="Loading artists">
-							<div v-for="index in 2" :key="index">
-								<div class="home-artist-skeleton aspect-square rounded-lg"></div>
-								<div class="home-artist-skeleton mt-2 h-4 w-3/4 mx-auto"></div>
+							class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold opacity-60 cursor-not-allowed"
+							style="box-shadow: 0 0 8px #f97316"
+							disabled>
+							{{ latestGigTicketLabel }}
+						</button>
+					</div>
+				</div>
+
+				<div
+					class="home-sidebar flex flex-col md:h-full md:justify-between w-full max-w-full min-w-0">
+					<div
+						v-if="showArtistsSliderWidget"
+						class="border border-white bg-black bg-opacity-70 p-4 sm:p-6 flex flex-col overflow-hidden"
+						style="box-shadow: 0 0 24px 0 #000">
+						<h2
+							class="font-bold text-2xl sm:text-3xl mb-6 sm:mb-8 text-darkYellow font-imfell text-center"
+							style="text-shadow: 0 0 12px #f97316">
+							{{ artistsSliderTitle }}
+						</h2>
+						<div class="mb-4 w-full overflow-hidden">
+							<Swiper
+								v-if="artists.length"
+								v-bind="swiperOptions"
+								class="home-artists-swiper w-full">
+								<SwiperSlide
+									v-for="artist in artists"
+									:key="artist.id"
+									class="home-artist-slide !w-[180px] !h-auto">
+									<div
+										class="aspect-square w-full overflow-hidden rounded-lg">
+										<img
+											v-if="artist.logo_url"
+											:src="artist.logo_url"
+											:alt="artist.name"
+											class="w-full h-full object-cover" />
+									</div>
+
+									<div
+										class="mt-2 text-center text-white font-bold">
+										{{ artist.name }}
+									</div>
+								</SwiperSlide>
+							</Swiper>
+							<div
+								v-else
+								class="grid grid-cols-2 gap-6"
+								aria-label="Loading artists">
+								<div v-for="index in 2" :key="index">
+									<div
+										class="home-artist-skeleton aspect-square rounded-lg"></div>
+									<div
+										class="home-artist-skeleton mt-2 h-4 w-3/4 mx-auto"></div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="flex flex-col items-center pt-8 text-center">
-					<h2
-						class="text-xl sm:text-2xl lg:text-3xl font-bold text-darkYellow mb-4 uppercase font-imfell tracking-wide">
-						{{ ctaHeadingText }}
-					</h2>
-					<a
-						:href="ctaButtonHref"
-						class="px-6 py-2 border border-darkYellow text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
-						style="box-shadow: 0 0 8px #f97316">
-						{{ ctaButtonLabel }}
-					</a>
+					<div class="flex flex-col items-center pt-8 text-center">
+						<h2
+							class="text-xl sm:text-2xl lg:text-3xl font-bold text-darkYellow mb-4 uppercase font-imfell tracking-wide">
+							{{ ctaHeadingText }}
+						</h2>
+						<a
+							:href="ctaButtonHref"
+							class="px-6 py-2 border border-darkYellow text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
+							style="box-shadow: 0 0 8px #f97316">
+							{{ ctaButtonLabel }}
+						</a>
+					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</main>
 </template>
@@ -217,10 +221,6 @@ const blocks = ref([]);
 const latestGig = ref(null);
 const artists = ref([]);
 const isHomeLoading = ref(true);
-const apiOrigin =
-	import.meta.env.VITE_API_BASE_URL ||
-	import.meta.env.VITE_API_PROXY_TARGET ||
-	"http://127.0.0.1";
 
 const homeTitleText = computed(() => {
 	const block = blocks.value.find((b) => b.type === "home_title");
@@ -280,14 +280,11 @@ const ctaButtonHref = computed(() => {
 });
 
 const latestGigImageUrl = computed(() => {
-	const posterUrl = latestGig.value?.poster_image_url;
-	if (typeof posterUrl === "string" && posterUrl.trim()) {
-		if (/^(https?:)?\/\//i.test(posterUrl)) return posterUrl;
-		if (posterUrl.startsWith("/")) return `${apiOrigin}${posterUrl}`;
-		return `${apiOrigin}/${posterUrl}`;
-	}
-
-	return latestGigBlock.value?.props?.fallbackImageUrl || "/logo.png";
+	return (
+		latestGig.value?.poster_image_url ||
+		latestGigBlock.value?.props?.fallbackImageUrl ||
+		"/logo.png"
+	);
 });
 
 function onLatestGigImageError(event) {

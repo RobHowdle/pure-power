@@ -75,12 +75,12 @@
     "src": "resources/fonts/Montserrat-Regular.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-BEpu3No_.js",
+    "file": "assets/app-Bf_kC05n.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-DCQPifEb.css",
+      "assets/app-B6Ocj43h.css",
       "assets/app-Btqm7Fuu.css"
     ],
     "assets": [
