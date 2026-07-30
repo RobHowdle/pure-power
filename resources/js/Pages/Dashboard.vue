@@ -24,8 +24,12 @@ async function logout() {
 			<div class="mt-8 grid gap-6 md:grid-cols-3">
 				<RouterLink
 					to="/admin/pages"
+					active-class="admin-card-active"
 					class="border border-white/10 bg-black/50 p-6 hover:border-yellow-400">
-					<h2 class="text-xl font-bold">Pages</h2>
+					<h2
+						class="text-xl font-bold group-[.router-link-active]:text-darkYellow">
+						Pages
+					</h2>
 
 					<p class="mt-2 text-white/60">
 						Manage website pages and content.
@@ -34,24 +38,36 @@ async function logout() {
 
 				<RouterLink
 					to="/admin/artists"
+					active-class="admin-card-active"
 					class="border border-white/10 bg-black/50 p-6 hover:border-yellow-400">
-					<h2 class="text-xl font-bold">Artists</h2>
+					<h2
+						class="text-xl font-bold group-[.router-link-active]:text-darkYellow">
+						Artists
+					</h2>
 
 					<p class="mt-2 text-white/60">Manage artists.</p>
 				</RouterLink>
 
 				<RouterLink
 					to="/admin/gigs"
+					active-class="admin-card-active"
 					class="border border-white/10 bg-black/50 p-6 hover:border-yellow-400">
-					<h2 class="text-xl font-bold">Gigs</h2>
+					<h2
+						class="text-xl font-bold group-[.router-link-active]:text-darkYellow">
+						Gigs
+					</h2>
 
 					<p class="mt-2 text-white/60">Manage gigs.</p>
 				</RouterLink>
 
 				<RouterLink
 					to="/admin/blog"
+					active-class="admin-card-active"
 					class="border border-white/10 bg-black/50 p-6 hover:border-yellow-400">
-					<h2 class="text-xl font-bold">Blog</h2>
+					<h2
+						class="text-xl font-bold group-[.router-link-active]:text-darkYellow">
+						Blog
+					</h2>
 
 					<p class="mt-2 text-white/60">Manage blog posts.</p>
 				</RouterLink>

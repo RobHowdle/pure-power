@@ -43,31 +43,31 @@ async function logout() {
 							<div class="hidden sm:flex gap-6">
 								<RouterLink
 									to="/dashboard"
-									class="text-sm text-white/80 hover:text-white">
+									class="admin-nav-link block-py-2">
 									Dashboard
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/pages"
-									class="text-sm text-white/80 hover:text-white">
+									class="admin-nav-link block-py-2">
 									Pages
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/artists"
-									class="text-sm text-white/80 hover:text-white">
+									class="admin-nav-link block-py-2">
 									Artists
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/gigs"
-									class="text-sm text-white/80 hover:text-white">
+									class="admin-nav-link block-py-2">
 									Gigs
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/blog"
-									class="text-sm text-white/80 hover:text-white">
+									class="admin-nav-link block-py-2">
 									Blog
 								</RouterLink>
 							</div>
@@ -99,23 +99,23 @@ async function logout() {
 				<div
 					v-if="showingNavigationDropdown"
 					class="sm:hidden bg-black/80 p-4">
-					<RouterLink to="/dashboard" class="block py-2">
+					<RouterLink to="/dashboard" class="block-py-2">
 						Dashboard
 					</RouterLink>
 
-					<RouterLink to="/pages" class="block py-2">
+					<RouterLink to="/admin/pages" class="block-py-2">
 						Pages
 					</RouterLink>
 
-					<RouterLink to="/artists" class="block py-2">
+					<RouterLink to="/admin/artists" class="block-py-2">
 						Artists
 					</RouterLink>
 
-					<RouterLink to="/gigs" class="block py-2">
+					<RouterLink to="/admin/gigs" class="block-py-2">
 						Gigs
 					</RouterLink>
 
-					<RouterLink to="/blog" class="block py-2">
+					<RouterLink to="/admin/blog" class="block-py-2">
 						Blog
 					</RouterLink>
 				</div>

@@ -16,8 +16,8 @@ import EditPage from "@/Pages/EditPage.vue";
 
 import AdminArtists from "@/Pages/Artists/Index.vue";
 import EditArtist from "@/Pages/Artists/Edit.vue";
-import AdminGigs from "@/Pages/Gigs/Index.vue";
-import EditGig from "@/Pages/Gigs/Edit.vue";
+import AdminGigs from "@/Pages/Admin/Gigs/Index.vue";
+import EditGig from "@/Pages/Admin/Gigs/Edit.vue";
 import AdminBlog from "@/Pages/Blog/Index.vue";
 import EditBlog from "@/Pages/Blog/Edit.vue";
 

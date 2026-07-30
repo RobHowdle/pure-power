@@ -78,3 +78,39 @@ textarea,
 select {
 	color-scheme: dark;
 }
+
+.admin-card {
+	@apply border border-white/10 bg-black/50 p-6 transition;
+}
+
+.admin-card:hover {
+	@apply border-darkYellow;
+}
+
+.admin-card-active {
+	border-color: #E58D37;
+	box-shadow: 0 0 20px rgba(229, 141, 55, 0.15);
+}
+
+.admin-nav-link {
+	@apply text-sm text-white/80 transition-colors;
+}
+
+.admin-nav-link:hover {
+	@apply text-white;
+}
+
+.admin-nav-link.router-link-active {
+	@apply font-bold text-darkYellow;
+	position: relative;
+}
+
+.admin-nav-link.router-link-active::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -8px;
+	height: 2px;
+	background: currentColor;
+}

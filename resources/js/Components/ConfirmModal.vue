@@ -1,4 +1,6 @@
 <script setup>
+import AdminButton from "@/Components/Admin/AdminButton.vue";
+
 defineProps({
 	open: {
 		type: Boolean,
@@ -50,24 +52,19 @@ const emit = defineEmits(["confirm", "cancel"]);
 			</p>
 
 			<div class="mt-6 flex justify-end gap-3">
-				<button
+				<AdminButton
+					variant="secondary"
 					type="button"
-					@click="emit('cancel')"
-					class="border border-white/20 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white hover:bg-white/10">
+					@click="emit('cancel')">
 					{{ cancelText }}
-				</button>
+				</AdminButton>
 
-				<button
+				<AdminButton
+					:variant="variant"
 					type="button"
-					@click="emit('confirm')"
-					class="border px-4 py-2 text-xs font-bold uppercase tracking-widest"
-					:class="
-						variant === 'danger'
-							? 'border-red-500/70 bg-red-500/20 text-red-200 hover:bg-red-500/30'
-							: 'border-darkYellow bg-darkYellow text-black hover:bg-lightYellow'
-					">
+					@click="emit('confirm')">
 					{{ confirmText }}
-				</button>
+				</AdminButton>
 			</div>
 		</div>
 	</div>
