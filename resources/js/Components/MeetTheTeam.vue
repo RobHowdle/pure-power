@@ -38,7 +38,7 @@
 				:key="member.id"
 				class="bg-black/70 border border-white p-6 flex flex-col items-center">
 				<img
-					:src="member.imageUrl || '/src/assets/logo.png'"
+					:src="member.imageUrl || '/src/assets/logo.webp'"
 					:alt="member.name || 'Team member'"
 					class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-darkYellow shadow-lg"
 					@error="onMemberImageError" />
@@ -81,7 +81,9 @@
 				</button>
 				<div class="flex flex-col items-center">
 					<img
-						:src="selectedMember.imageUrl || '/src/assets/logo.png'"
+						:src="
+							selectedMember.imageUrl || '/src/assets/logo.webp'
+						"
 						:alt="selectedMember.name || 'Team member'"
 						class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-darkYellow shadow-lg"
 						@error="onMemberImageError" />
@@ -160,8 +162,8 @@ const goBack = () => {
 const onMemberImageError = (event) => {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.png")) return;
-	img.src = "/src/assets/logo.png";
+	if (img.src.endsWith("/src/assets/logo.webp")) return;
+	img.src = "/src/assets/logo.webp";
 };
 
 onMounted(async () => {

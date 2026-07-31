@@ -19,7 +19,7 @@
                     <tr>
                         <td align="center" style="background:#000; padding:30px;">
 
-                            <img src="{{ config('app.url') }}/logo.png" alt="Pure Power Logo" style="max-width:220px;">
+                            <img src="{{ config('app.url') }}/logo.webp" alt="Pure Power Logo" style="max-width:220px;">
 
                         </td>
                     </tr>

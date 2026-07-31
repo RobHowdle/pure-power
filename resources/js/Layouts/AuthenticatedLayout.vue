@@ -36,7 +36,7 @@ async function logout() {
 							<RouterLink to="/" target="_blank">
 								<img
 									class="h-9 w-auto"
-									src="/logo.png"
+									src="/logo.webp"
 									alt="Pure Power" />
 							</RouterLink>
 
@@ -142,7 +142,7 @@ async function logout() {
 	z-index: 0;
 	pointer-events: none;
 
-	background-image: url("/smoke.png"), url("/smoke.png");
+	background-image: url("../assets/smoke.png"), url("../assets/smoke.png");
 
 	background-size:
 		160% 160%,

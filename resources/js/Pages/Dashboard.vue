@@ -98,7 +98,7 @@ async function logout() {
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	background-image: url("/smoke.png"), url("/smoke.png");
+	background-image: url("../assets/smoke.png"), url("../assets/smoke.png");
 	background-repeat: repeat, repeat;
 	background-size:
 		160% 160%,

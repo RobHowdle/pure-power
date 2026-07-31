@@ -283,15 +283,15 @@ const latestGigImageUrl = computed(() => {
 	return (
 		latestGig.value?.poster_image_url ||
 		latestGigBlock.value?.props?.fallbackImageUrl ||
-		"/logo.png"
+		"/logo.webp"
 	);
 });
 
 function onLatestGigImageError(event) {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/logo.png")) return;
-	img.src = "/logo.png";
+	if (img.src.endsWith("/logo.webp")) return;
+	img.src = "/logo.webp";
 }
 
 const latestGigTitle = computed(() => {

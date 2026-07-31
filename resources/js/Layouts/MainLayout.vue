@@ -80,7 +80,10 @@
 							"
 							@click="mobileNavOpen = false">
 							<span class="flex items-center gap-3">
-								<span class="text-xs font-montserrat text-darkYellow/70">0{{ index + 1 }}</span>
+								<span
+									class="text-xs font-montserrat text-darkYellow/70"
+									>0{{ index + 1 }}</span
+								>
 								{{ item.text }}
 							</span>
 							<svg
@@ -88,7 +91,12 @@
 								fill="none"
 								class="mobile-nav-arrow h-4 w-4"
 								aria-hidden="true">
-								<path d="M5 12h13M14 7l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+								<path
+									d="M5 12h13M14 7l5 5-5 5"
+									stroke="currentColor"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round" />
 							</svg>
 						</router-link>
 					</div>
@@ -158,7 +166,7 @@
 <script setup>
 import {ref, onMounted, onUnmounted, nextTick, watch} from "vue";
 import {useRoute} from "vue-router";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 
 const logoRef = ref(null);
 const navItems = [
@@ -314,7 +322,7 @@ function navOrbitStyle(idx, total) {
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	background-image: url("/smoke.png"), url("/smoke.png");
+	background-image: url("../assets/smoke.png"), url("../assets/smoke.png");
 	background-repeat: repeat, repeat;
 	background-size:
 		160% 160%,
@@ -357,7 +365,11 @@ a {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
-	background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 22%);
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.04),
+		transparent 22%
+	);
 }
 
 .mobile-nav-header {
@@ -447,7 +459,7 @@ a {
 			rgba(0, 0, 0, 0.15) 55%,
 			rgba(0, 0, 0, 0.6) 100%
 		),
-		url("/smoke.png"), url("/smoke.png");
+		url("../assets/smoke.png"), url("../assets/smoke.png");
 
 	background-repeat: no-repeat, repeat, repeat;
 	background-size:

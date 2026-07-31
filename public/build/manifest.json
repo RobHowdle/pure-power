@@ -44,55 +44,34 @@
     "src": "_montserrat-700-normal-BdjcYUrC.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CKQfjAKa.css",
+    "file": "assets/app-DFEu546f.css",
     "name": "app",
     "names": [
       "app.css"
     ],
     "src": "resources/css/app.css",
-    "isEntry": true,
-    "assets": [
-      "assets/Montserrat-Regular-DbzI1qGp.woff2",
-      "assets/Montserrat-Italic-DLzCfu_J.woff2",
-      "assets/IMFellDWPica-Regular-BoT0G5DK.woff2",
-      "assets/IMFellDWPica-Italic-BYtc5EQo.woff2"
-    ]
-  },
-  "resources/fonts/IMFellDWPica-Italic.woff2": {
-    "file": "assets/IMFellDWPica-Italic-BYtc5EQo.woff2",
-    "src": "resources/fonts/IMFellDWPica-Italic.woff2"
-  },
-  "resources/fonts/IMFellDWPica-Regular.woff2": {
-    "file": "assets/IMFellDWPica-Regular-BoT0G5DK.woff2",
-    "src": "resources/fonts/IMFellDWPica-Regular.woff2"
-  },
-  "resources/fonts/Montserrat-Italic.woff2": {
-    "file": "assets/Montserrat-Italic-DLzCfu_J.woff2",
-    "src": "resources/fonts/Montserrat-Italic.woff2"
-  },
-  "resources/fonts/Montserrat-Regular.woff2": {
-    "file": "assets/Montserrat-Regular-DbzI1qGp.woff2",
-    "src": "resources/fonts/Montserrat-Regular.woff2"
+    "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CcgR-oVU.js",
+    "file": "assets/app-Crjpaa18.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-CGOGZEGX.css",
-      "assets/app-CKQfjAKa.css"
+      "assets/app-DRVU_Jyb.css",
+      "assets/app-DFEu546f.css"
     ],
     "assets": [
-      "assets/logo-BZ4rQcN0.png",
-      "assets/Montserrat-Regular-DbzI1qGp.woff2",
-      "assets/Montserrat-Italic-DLzCfu_J.woff2",
-      "assets/IMFellDWPica-Regular-BoT0G5DK.woff2",
-      "assets/IMFellDWPica-Italic-BYtc5EQo.woff2"
+      "assets/logo-BmuBjRdl.webp",
+      "assets/smoke-D0twUiRm.png"
     ]
   },
-  "resources/js/assets/logo.png": {
-    "file": "assets/logo-BZ4rQcN0.png",
-    "src": "resources/js/assets/logo.png"
+  "resources/js/assets/logo.webp": {
+    "file": "assets/logo-BmuBjRdl.webp",
+    "src": "resources/js/assets/logo.webp"
+  },
+  "resources/js/assets/smoke.png": {
+    "file": "assets/smoke-D0twUiRm.png",
+    "src": "resources/js/assets/smoke.png"
   }
 }

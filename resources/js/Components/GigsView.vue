@@ -217,14 +217,14 @@ function gigImageSrc(imageUrl) {
 		return `${apiOrigin}/${imageUrl}`;
 	}
 
-	return "/src/assets/logo.png";
+	return "/src/assets/logo.webp";
 }
 
 function onGigImageError(event) {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.png")) return;
-	img.src = "/src/assets/logo.png";
+	if (img.src.endsWith("/src/assets/logo.webp")) return;
+	img.src = "/src/assets/logo.webp";
 }
 
 async function fetchUpcomingGigs() {

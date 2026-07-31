@@ -255,7 +255,7 @@ function artistImageSrc(imageUrl) {
 		return `/${imageUrl}`;
 	}
 
-	return "/logo.png";
+	return "/logo.webp";
 }
 
 function socialLabel(link) {

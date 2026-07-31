@@ -31,7 +31,7 @@
 
             background:
                 linear-gradient(rgba(0, 0, 0, .72), rgba(0, 0, 0, .82)),
-                url('/smoke.png') center center / cover no-repeat;
+                url('../assets/smoke.png') center center / cover no-repeat;
 
             z-index: -2;
         }
@@ -114,7 +114,7 @@
 
         <div class="content">
 
-            <img class="logo" src="/logo.png" alt="Pure Power">
+            <img class="logo" src="/logo.webp" alt="Pure Power">
 
             <h1>Pure Power</h1>
 

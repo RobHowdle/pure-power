@@ -84,14 +84,14 @@ const latestGigImageUrl = computed(() => {
 		return `${apiOrigin}/${posterUrl}`;
 	}
 
-	return latestGigBlock.value?.props?.fallbackImageUrl || "/logo.png";
+	return latestGigBlock.value?.props?.fallbackImageUrl || "/logo.webp";
 });
 
 function onLatestGigImageError(event) {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/logo.png")) return;
-	img.src = "/logo.png";
+	if (img.src.endsWith("/logo.webp")) return;
+	img.src = "/logo.webp";
 }
 
 const latestGigTitle = computed(() => {

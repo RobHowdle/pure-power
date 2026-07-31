@@ -145,8 +145,8 @@ const notFound = computed(() => !loading.value && !artist.value);
 function onArtistImageError(event) {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.png")) return;
-	img.src = "/src/assets/logo.png";
+	if (img.src.endsWith("/src/assets/logo.webp")) return;
+	img.src = "/src/assets/logo.webp";
 }
 
 function artistImageSrc(imageUrl) {
@@ -156,7 +156,7 @@ function artistImageSrc(imageUrl) {
 		return `/${imageUrl}`;
 	}
 
-	return "/logo.png";
+	return "/logo.webp";
 }
 
 async function fetchArtist() {
