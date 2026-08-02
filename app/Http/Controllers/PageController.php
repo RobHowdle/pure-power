@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-
-use App\Models\Page;
 
 class PageController extends Controller
 {
@@ -41,11 +40,11 @@ class PageController extends Controller
             ? Cache::remember(
                 'public.pages.home',
                 now()->addMinutes(5),
-                fn() => $this->publicPagePayload($identifier)
+                fn () => $this->publicPagePayload($identifier)
             )
             : $this->publicPagePayload($identifier);
 
-        if (!$payload) {
+        if (! $payload) {
             return response()->json(['message' => 'Page not found'], 404);
         }
 
@@ -74,7 +73,7 @@ class PageController extends Controller
         }
 
         $page = $pageQuery->first();
-        if (!$page) {
+        if (! $page) {
             return null;
         }
 
@@ -104,10 +103,18 @@ class PageController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:pages,slug',
             'status' => 'required|in:draft,published',
+            'content' => 'nullable|string',
         ]);
+
+        if ($validated['status'] === 'published') {
+            $validated['published_at'] = now();
+        }
+
         $page = Page::create($validated);
+
         Cache::forget('public.pages.home');
-        return redirect()->route('pages.index')->with('success', 'Page created successfully.');
+
+        return response()->json($page, 201);
     }
 
     /**
@@ -116,8 +123,10 @@ class PageController extends Controller
     public function update(Request $request, Page $page)
     {
         $validated = $request->validate([
-            'content' => 'nullable|string|json',
+            'title' => 'sometimes|required|string|max:255',
+            'slug' => 'sometimes|required|string|max:255|unique:pages,slug,'.$page->id,
             'status' => 'required|in:draft,published',
+            'content' => 'nullable|string',
         ]);
 
         $page->fill($validated);
@@ -147,7 +156,9 @@ class PageController extends Controller
         $page->delete();
         Cache::forget('public.pages.home');
 
-        return redirect()->route('pages.index')->with('success', 'Page deleted successfully.');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     /**
@@ -155,11 +166,11 @@ class PageController extends Controller
      */
     public function toggleHidden(Page $page)
     {
-        $page->is_hidden = !$page->is_hidden;
+        $page->is_hidden = ! $page->is_hidden;
         $page->save();
         Cache::forget('public.pages.home');
 
-        return redirect()->route('pages.index');
+        return response()->json($page);
     }
 
     /**
@@ -169,6 +180,9 @@ class PageController extends Controller
     {
         $page->setAsHome();
         Cache::forget('public.pages.home');
-        return redirect()->route('pages.index')->with('success', 'Home page set successfully.');
+
+        return response()->json([
+            'message' => 'Home page set successfully.',
+        ]);
     }
 }

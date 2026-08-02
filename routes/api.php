@@ -13,11 +13,17 @@ use App\Http\Controllers\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/pages', [PageController::class, 'index']);
-Route::get('/pages/{slug}', [PageController::class, 'show']);
 Route::prefix('admin')->group(function () {
+    /**
+     * Page Admin Routes
+     */
+    Route::get('/pages', [PageController::class, 'index']);
+    Route::post('/pages', [PageController::class, 'store']);
     Route::get('/pages/{page}', [PageController::class, 'edit']);
     Route::put('/pages/{page}', [PageController::class, 'update']);
+    Route::delete('/pages/{page}', [PageController::class, 'destroy']);
+    Route::patch('/pages/{page}/toggle-hidden', [PageController::class, 'toggleHidden']);
+    Route::patch('/pages/{page}/set-home', [PageController::class, 'setHome']);
     /**
      * Artist Admin Routes
      */
@@ -58,6 +64,7 @@ Route::get('/blog-posts', [PublicBlogPostController::class, 'index']);
 Route::get('/blog-posts/{slug}', [PublicBlogPostController::class, 'show']);
 Route::get('/artists', [PublicArtistController::class, 'index']);
 Route::get('/artists/{slug}', [PublicArtistController::class, 'show']);
+Route::get('/pages/{identifier}', [PageController::class, 'show']);
 
 Route::post('/contact', [ContactController::class, 'send']);
 

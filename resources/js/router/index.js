@@ -81,24 +81,6 @@ const routes = [
 		},
 	},
 
-	{
-		path: "/admin/pages",
-		name: "admin.pages",
-		component: () => import("@/Pages/PageManager.vue"),
-		meta: {
-			layout: "authenticated",
-		},
-	},
-
-	{
-		path: "/admin/pages/:id/edit",
-		name: "admin.pages.edit",
-		component: () => import("@/Pages/EditPage.vue"),
-		meta: {
-			layout: "authenticated",
-		},
-	},
-
 	/*
 	|--------------------------------------------------------------------------
 	| Artists Admin
@@ -166,6 +148,30 @@ const routes = [
 		path: "/admin/blog/:id/edit",
 		name: "admin.blog.edit",
 		component: () => import("@/Pages/Admin/Blogs/Edit.vue"),
+		meta: {
+			layout: "authenticated",
+		},
+	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Pages Admin
+	|--------------------------------------------------------------------------
+	*/
+
+	{
+		path: "/admin/pages",
+		name: "admin.pages",
+		component: () => import("@/Pages/Admin/Pages/Index.vue"),
+		meta: {
+			layout: "authenticated",
+		},
+	},
+
+	{
+		path: "/admin/pages/:id/edit",
+		name: "admin.pages.edit",
+		component: () => import("@/Pages/Admin/Pages/Edit.vue"),
 		meta: {
 			layout: "authenticated",
 		},

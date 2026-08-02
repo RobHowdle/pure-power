@@ -1,3 +1,196 @@
+<script setup>
+import {computed, onMounted, ref} from "vue";
+import {Swiper, SwiperSlide} from "swiper/vue";
+import {Grid} from "swiper/modules";
+import logo from "@/assets/logo.webp";
+import "swiper/css";
+import "swiper/css/grid";
+import "swiper/css/navigation";
+
+const swiperOptions = {
+	slidesPerView: "auto",
+	loop: false,
+	spaceBetween: 24,
+	navigation: false,
+	modules: [Grid],
+	breakpoints: {
+		2000: {
+			slidesPerView: 2,
+			spaceBetween: 16,
+			grid: {
+				rows: 2,
+				fill: "row",
+			},
+		},
+	},
+};
+
+const blocks = ref([]);
+const latestGig = ref(null);
+const artists = ref([]);
+const isHomeLoading = ref(true);
+
+const homeTitleText = computed(() => {
+	const block = blocks.value.find((b) => b.type === "home_title");
+	return block?.props?.text || "FROM LOCAL LEGENDS TO GLOBAL STAGES";
+});
+
+const homeIntroParagraphs = computed(() => {
+	const block = blocks.value.find((b) => b.type === "home_intro");
+	const text = block?.props?.text;
+	if (!text) {
+		return [
+			"Pure Power Darkside Management is a global management company representing rock, metal, and punk bands worldwide. Established in 1990, our mission has always been to get artists seen on some of the most iconic stages around the world.",
+			"Originally founded as a UK-focused management agency, we've since grown to work with established artists from across the globe. Unlike many traditional management companies, we take a different approach—putting on high-quality shows at accessible prices and ensuring our artists aren’t weighed down by excessive fees. We believe musicians deserve to earn fairly while doing what they love most: creating and performing powerful music.",
+		];
+	}
+
+	return String(text)
+		.split(/\n\s*\n/)
+		.map((p) => p.trim())
+		.filter(Boolean);
+});
+
+const hasLatestGigWidget = computed(() => {
+	if (!Array.isArray(blocks.value) || blocks.value.length === 0) {
+		return true;
+	}
+
+	return blocks.value.some((b) => b.type === "latest_gig");
+});
+
+const hasArtistsSliderWidget = computed(() => {
+	if (!Array.isArray(blocks.value) || blocks.value.length === 0) {
+		return true;
+	}
+
+	return blocks.value.some((b) => b.type === "artists_slider");
+});
+const showLatestGigWidget = computed(
+	() => isHomeLoading.value || hasLatestGigWidget.value,
+);
+const showArtistsSliderWidget = computed(
+	() => isHomeLoading.value || hasArtistsSliderWidget.value,
+);
+const latestGigBlock = computed(
+	() => blocks.value.find((b) => b.type === "latest_gig") || null,
+);
+const hasRealLatestGig = computed(() => Boolean(latestGig.value?.id));
+
+const artistsSliderTitle = computed(() => {
+	const block = blocks.value.find((b) => b.type === "artists_slider");
+	return block?.props?.title || "OUR ARTISTS";
+});
+
+const ctaHeadingText = computed(() => {
+	const block = blocks.value.find((b) => b.type === "home_cta");
+	return block?.props?.heading || "READY TO GET YOUR BAND ON STAGE?";
+});
+
+const ctaButtonLabel = computed(() => {
+	const block = blocks.value.find((b) => b.type === "home_cta");
+	return block?.props?.buttonLabel || "CONTACT US";
+});
+
+const ctaButtonHref = computed(() => {
+	return "/contact";
+});
+
+const latestGigImageUrl = computed(() => {
+	return (
+		latestGig.value?.poster_image_url ||
+		latestGigBlock.value?.props?.fallbackImageUrl ||
+		logo
+	);
+});
+
+function onLatestGigImageError(event) {
+	const img = event?.target;
+	if (!img) return;
+	if (img.src === logo) return;
+	img.src = logo;
+}
+
+const latestGigTitle = computed(() => {
+	if (!hasRealLatestGig.value) return "NO GIG CURRENTLY ANNOUNCED";
+	return (
+		latestGig.value?.title ||
+		latestGigBlock.value?.props?.fallbackTitle ||
+		"BAND NAME"
+	);
+});
+
+const latestGigDate = computed(() => {
+	const iso = latestGig.value?.starts_at;
+	if (!iso) return "DATE TBA";
+
+	const date = new Date(iso);
+	if (Number.isNaN(date.getTime())) return "DATE TBA";
+
+	return date.toLocaleDateString(undefined, {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+});
+
+const latestGigLocation = computed(() => {
+	const venue = latestGig.value?.venue;
+	const city = latestGig.value?.city;
+	if (!venue && !city) return "CHECK BACK SOON";
+	return [venue, city].filter(Boolean).join(", ").toUpperCase();
+});
+
+const latestGigExcerpt = computed(() => {
+	if (!hasRealLatestGig.value) {
+		return "We do not have a live gig listing right now. New show announcements will appear here first.";
+	}
+
+	return (
+		latestGig.value?.artists_playing ||
+		latestGig.value?.excerpt ||
+		latestGigBlock.value?.props?.fallbackExcerpt ||
+		"Don't miss an unforgettable night of heavy hits"
+	);
+});
+
+const latestGigTicketUrl = computed(() => latestGig.value?.ticket_url || null);
+const latestGigTicketLabel = computed(() => {
+	if (!hasRealLatestGig.value) return "NO TICKETS YET";
+	return latestGigBlock.value?.props?.ticketLabel || "TICKETS";
+});
+
+async function fetchHomeBlocks() {
+	const res = await fetch("/api/pages/home");
+	if (!res.ok) throw new Error("Failed to fetch home page");
+	const json = await res.json();
+	blocks.value = Array.isArray(json.blocks) ? json.blocks : [];
+}
+
+async function fetchLatestGig() {
+	const res = await fetch("/api/gigs/latest");
+	if (!res.ok) throw new Error("Failed to fetch latest gig");
+
+	const json = await res.json();
+	latestGig.value = json?.gig ?? null;
+}
+
+async function fetchArtists() {
+	const res = await fetch("/api/artists");
+	if (!res.ok) throw new Error("Failed to fetch artists");
+	artists.value = await res.json();
+}
+
+onMounted(async () => {
+	await Promise.allSettled([
+		fetchHomeBlocks(),
+		fetchLatestGig(),
+		fetchArtists(),
+	]);
+	isHomeLoading.value = false;
+});
+</script>
+
 <template>
 	<main
 		class="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
@@ -190,184 +383,3 @@
 	}
 }
 </style>
-
-<script setup>
-import {computed, onMounted, ref} from "vue";
-import {Swiper, SwiperSlide} from "swiper/vue";
-import {Grid} from "swiper/modules";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/navigation";
-
-const swiperOptions = {
-	slidesPerView: "auto",
-	loop: false,
-	spaceBetween: 24,
-	navigation: false,
-	modules: [Grid],
-	breakpoints: {
-		2000: {
-			slidesPerView: 2,
-			spaceBetween: 16,
-			grid: {
-				rows: 2,
-				fill: "row",
-			},
-		},
-	},
-};
-
-const blocks = ref([]);
-const latestGig = ref(null);
-const artists = ref([]);
-const isHomeLoading = ref(true);
-
-const homeTitleText = computed(() => {
-	const block = blocks.value.find((b) => b.type === "home_title");
-	return block?.props?.text || "FROM LOCAL LEGENDS TO GLOBAL STAGES";
-});
-
-const homeIntroParagraphs = computed(() => {
-	const block = blocks.value.find((b) => b.type === "home_intro");
-	const text = block?.props?.text;
-	if (!text) {
-		return [
-			"Pure Power Darkside Management is a global management company representing rock, metal, and punk bands worldwide. Established in 1990, our mission has always been to get artists seen on some of the most iconic stages around the world.",
-			"Originally founded as a UK-focused management agency, we've since grown to work with established artists from across the globe. Unlike many traditional management companies, we take a different approach—putting on high-quality shows at accessible prices and ensuring our artists aren’t weighed down by excessive fees. We believe musicians deserve to earn fairly while doing what they love most: creating and performing powerful music.",
-		];
-	}
-
-	return String(text)
-		.split(/\n\s*\n/)
-		.map((p) => p.trim())
-		.filter(Boolean);
-});
-
-const hasLatestGigWidget = computed(() =>
-	blocks.value.some((b) => b.type === "latest_gig"),
-);
-const hasArtistsSliderWidget = computed(() =>
-	blocks.value.some((b) => b.type === "artists_slider"),
-);
-const showLatestGigWidget = computed(
-	() => isHomeLoading.value || hasLatestGigWidget.value,
-);
-const showArtistsSliderWidget = computed(
-	() => isHomeLoading.value || hasArtistsSliderWidget.value,
-);
-const latestGigBlock = computed(
-	() => blocks.value.find((b) => b.type === "latest_gig") || null,
-);
-const hasRealLatestGig = computed(() => Boolean(latestGig.value?.id));
-
-const artistsSliderTitle = computed(() => {
-	const block = blocks.value.find((b) => b.type === "artists_slider");
-	return block?.props?.title || "OUR ARTISTS";
-});
-
-const ctaHeadingText = computed(() => {
-	const block = blocks.value.find((b) => b.type === "home_cta");
-	return block?.props?.heading || "READY TO GET YOUR BAND ON STAGE?";
-});
-
-const ctaButtonLabel = computed(() => {
-	const block = blocks.value.find((b) => b.type === "home_cta");
-	return block?.props?.buttonLabel || "CONTACT US";
-});
-
-const ctaButtonHref = computed(() => {
-	return "/contact";
-});
-
-const latestGigImageUrl = computed(() => {
-	return (
-		latestGig.value?.poster_image_url ||
-		latestGigBlock.value?.props?.fallbackImageUrl ||
-		"/logo.webp"
-	);
-});
-
-function onLatestGigImageError(event) {
-	const img = event?.target;
-	if (!img) return;
-	if (img.src.endsWith("/logo.webp")) return;
-	img.src = "/logo.webp";
-}
-
-const latestGigTitle = computed(() => {
-	if (!hasRealLatestGig.value) return "NO GIG CURRENTLY ANNOUNCED";
-	return (
-		latestGig.value?.title ||
-		latestGigBlock.value?.props?.fallbackTitle ||
-		"BAND NAME"
-	);
-});
-
-const latestGigDate = computed(() => {
-	const iso = latestGig.value?.starts_at;
-	if (!iso) return "DATE TBA";
-
-	const date = new Date(iso);
-	if (Number.isNaN(date.getTime())) return "DATE TBA";
-
-	return date.toLocaleDateString(undefined, {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-	});
-});
-
-const latestGigLocation = computed(() => {
-	const venue = latestGig.value?.venue;
-	const city = latestGig.value?.city;
-	if (!venue && !city) return "CHECK BACK SOON";
-	return [venue, city].filter(Boolean).join(", ").toUpperCase();
-});
-
-const latestGigExcerpt = computed(() => {
-	if (!hasRealLatestGig.value) {
-		return "We do not have a live gig listing right now. New show announcements will appear here first.";
-	}
-
-	return (
-		latestGig.value?.artists_playing ||
-		latestGig.value?.excerpt ||
-		latestGigBlock.value?.props?.fallbackExcerpt ||
-		"Don't miss an unforgettable night of heavy hits"
-	);
-});
-
-const latestGigTicketUrl = computed(() => latestGig.value?.ticket_url || null);
-const latestGigTicketLabel = computed(() => {
-	if (!hasRealLatestGig.value) return "NO TICKETS YET";
-	return latestGigBlock.value?.props?.ticketLabel || "TICKETS";
-});
-
-async function fetchHomeBlocks() {
-	const res = await fetch("/api/pages/home");
-	if (!res.ok) throw new Error("Failed to fetch home page");
-	const json = await res.json();
-	blocks.value = Array.isArray(json.blocks) ? json.blocks : [];
-}
-
-async function fetchLatestGig() {
-	const res = await fetch("/api/gigs/latest");
-	if (!res.ok) throw new Error("Failed to fetch latest gig");
-	latestGig.value = await res.json();
-}
-
-async function fetchArtists() {
-	const res = await fetch("/api/artists");
-	if (!res.ok) throw new Error("Failed to fetch artists");
-	artists.value = await res.json();
-}
-
-onMounted(async () => {
-	await Promise.allSettled([
-		fetchHomeBlocks(),
-		fetchLatestGig(),
-		fetchArtists(),
-	]);
-	isHomeLoading.value = false;
-});
-</script>

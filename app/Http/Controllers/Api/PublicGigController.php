@@ -26,7 +26,9 @@ class PublicGigController extends Controller
                     ->first();
         });
 
-        return response()->json($gig ? $this->transformGig($gig) : null);
+        return response()->json([
+            'gig' => $gig ? $this->transformGig($gig) : null,
+        ]);
     }
 
     public function upcoming(Request $request): JsonResponse
@@ -47,7 +49,7 @@ class PublicGigController extends Controller
             ->orderBy('created_at')
             ->get();
 
-        return response()->json($gigs->map(fn(Gig $gig) => $this->transformGig($gig)));
+        return response()->json($gigs->map(fn (Gig $gig) => $this->transformGig($gig)));
     }
 
     private function baseQuery()
