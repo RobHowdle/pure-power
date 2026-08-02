@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\WebpEncoder;
@@ -16,6 +16,8 @@ class ArtistController extends Controller
 {
     public function index()
     {
+        // dd(Artist::query()->orderByDesc('created_at')->get());
+
         return response()->json(
             Artist::query()
                 ->orderByDesc('created_at')
@@ -34,7 +36,7 @@ class ArtistController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:artists,slug,' . $request->id,
+            'slug' => 'nullable|string|max:255|unique:artists,slug,'.$request->id,
             'status' => 'required|in:draft,published',
 
             'content' => 'nullable|string',
@@ -53,7 +55,6 @@ class ArtistController extends Controller
         $validated['slug'] = $validated['slug']
             ?: Str::slug($validated['name']);
 
-
         /*
         |--------------------------------------------------------------------------
         | Artist Image
@@ -68,7 +69,6 @@ class ArtistController extends Controller
             );
         }
 
-
         /*
         |--------------------------------------------------------------------------
         | Logo
@@ -81,7 +81,6 @@ class ArtistController extends Controller
                 $request->file('logo')
             );
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -99,38 +98,46 @@ class ArtistController extends Controller
             $validated['epk_filename'] = $file->getClientOriginalName();
         }
 
-
         $artist = Artist::create($validated);
         Cache::forget('public.artists.index');
 
         return response()->json($artist);
     }
 
-
     public function update(Request $request, Artist $artist)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:artists,slug,' . $artist->id,
-            'status' => 'required|in:draft,published',
+            'name' => 'sometimes|required|string|max:255',
+            'slug' => 'sometimes|nullable|string|max:255|unique:artists,slug,'.$artist->id,
+            'status' => 'sometimes|required|in:draft,published',
 
-            'content' => 'nullable|string',
-            'data' => 'nullable|json',
+            'content' => 'sometimes|nullable|string',
+            'data' => 'sometimes|nullable|json',
 
-            'image' => 'nullable|image|max:20480',
-            'logo' => 'nullable|image|max:20480',
-            'epk' => 'nullable|mimes:pdf|max:51200',
+            'image' => 'sometimes|nullable|image|max:20480',
+            'logo' => 'sometimes|nullable|image|max:20480',
+            'epk' => 'sometimes|nullable|mimes:pdf|max:51200',
         ]);
 
+        if (array_key_exists('name', $validated)) {
 
-        $validated['slug'] = $validated['slug']
-            ?: Str::slug($validated['name']);
+            $validated['slug'] = $validated['slug']
+                ?? Str::slug($validated['name']);
 
+        }
 
-        $validated['data'] = $request->filled('data')
-            ? json_decode($request->data, true)
-            : null;
+        if ($request->filled('data')) {
 
+            $incomingData = json_decode(
+                $request->data,
+                true
+            );
+
+            $validated['data'] = array_merge(
+                $artist->data ?? [],
+                $incomingData
+            );
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -148,7 +155,6 @@ class ArtistController extends Controller
             );
         }
 
-
         /*
         |--------------------------------------------------------------------------
         | Logo
@@ -164,7 +170,6 @@ class ArtistController extends Controller
             );
         }
 
-
         /*
         |--------------------------------------------------------------------------
         | EPK
@@ -175,19 +180,24 @@ class ArtistController extends Controller
 
             $file = $request->file('epk');
 
-            $path = $file->store('artists/epks', 'public');
+            $path = $file->store(
+                'artists/epks',
+                'public'
+            );
 
             $validated['epk_file'] = Storage::url($path);
+
             $validated['epk_filename'] = $file->getClientOriginalName();
         }
 
-
         $artist->update($validated);
+
         Cache::forget('public.artists.index');
 
-        return response()->json($artist->fresh());
+        return response()->json(
+            $artist->fresh()
+        );
     }
-
 
     public function destroy(Artist $artist)
     {
@@ -195,24 +205,22 @@ class ArtistController extends Controller
         Cache::forget('public.artists.index');
 
         return response()->json([
-            'message' => 'Artist deleted'
+            'message' => 'Artist deleted',
         ]);
     }
 
-
     public function toggleHidden(Artist $artist)
     {
-        $artist->is_hidden = !$artist->is_hidden;
+        $artist->is_hidden = ! $artist->is_hidden;
         $artist->save();
         Cache::forget('public.artists.index');
 
         return response()->json($artist);
     }
 
-
     private function deletePublicFile(?string $url): void
     {
-        if (!$url) {
+        if (! $url) {
             return;
         }
 
@@ -221,24 +229,23 @@ class ArtistController extends Controller
         );
     }
 
-
     private function saveOptimisedImage(
         UploadedFile $file,
         string $directory
     ): string {
 
-        $filename = Str::uuid() . '.webp';
+        $filename = Str::uuid().'.webp';
 
         $path = storage_path(
             "app/public/{$directory}/thumbs"
         );
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
         $manager = new ImageManager(
-            new Driver()
+            new Driver
         );
 
         $manager->decode($file)
@@ -253,21 +260,20 @@ class ArtistController extends Controller
         );
     }
 
-
     private function saveOptimisedLogo(
         UploadedFile $file
     ): string {
 
-        $filename = Str::uuid() . '.webp';
+        $filename = Str::uuid().'.webp';
 
         $directory = storage_path('app/public/artists/logos');
 
-        if (!file_exists($directory)) {
+        if (! file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
 
         $manager = new ImageManager(
-            new Driver()
+            new Driver
         );
 
         $manager->decode($file)

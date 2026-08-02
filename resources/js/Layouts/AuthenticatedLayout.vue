@@ -1,11 +1,17 @@
 <script setup>
-import {RouterLink} from "vue-router";
+import {RouterLink, useRoute} from "vue-router";
 import axios from "axios";
 import {ref, onMounted} from "vue";
+import logo from "@/assets/logo.webp";
 
 const showingNavigationDropdown = ref(false);
 
 const user = ref(null);
+
+const route = useRoute();
+const isActive = (path) => {
+	return route.path.startsWith(path);
+};
 
 async function getUser() {
 	try {
@@ -36,38 +42,53 @@ async function logout() {
 							<RouterLink to="/" target="_blank">
 								<img
 									class="h-9 w-auto"
-									src="/logo.webp"
+									:src="logo"
 									alt="Pure Power" />
 							</RouterLink>
 
 							<div class="hidden sm:flex gap-6">
 								<RouterLink
 									to="/dashboard"
-									class="admin-nav-link block-py-2">
+									:class="[
+										'admin-nav-link block-py-2',
+										{active: isActive('/dashboard')},
+									]">
 									Dashboard
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/pages"
-									class="admin-nav-link block-py-2">
+									:class="[
+										'admin-nav-link block-py-2',
+										{active: isActive('/admin/pages')},
+									]">
 									Pages
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/artists"
-									class="admin-nav-link block-py-2">
+									:class="[
+										'admin-nav-link block-py-2',
+										{active: isActive('/admin/artists')},
+									]">
 									Artists
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/gigs"
-									class="admin-nav-link block-py-2">
+									:class="[
+										'admin-nav-link block-py-2',
+										{active: isActive('/admin/gigs')},
+									]">
 									Gigs
 								</RouterLink>
 
 								<RouterLink
 									to="/admin/blog"
-									class="admin-nav-link block-py-2">
+									:class="[
+										'admin-nav-link block-py-2',
+										{active: isActive('/admin/blog')},
+									]">
 									Blog
 								</RouterLink>
 							</div>
@@ -132,7 +153,6 @@ async function logout() {
 .auth-shell {
 	min-height: 100vh;
 	background: #000;
-	font-family: "Montserrat", system-ui, sans-serif;
 }
 
 .auth-shell::before {
@@ -142,7 +162,7 @@ async function logout() {
 	z-index: 0;
 	pointer-events: none;
 
-	background-image: url("../assets/smoke.png"), url("../assets/smoke.png");
+	background-image: url("../assets/smoke.avif"), url("../assets/smoke.avif");
 
 	background-size:
 		160% 160%,

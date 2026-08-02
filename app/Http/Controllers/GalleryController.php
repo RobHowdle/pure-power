@@ -44,7 +44,6 @@ class GalleryController extends Controller
         return response()->json($gallery);
     }
 
-
     public function destroy(ArtistGallery $gallery)
     {
         Storage::disk('public')->delete($gallery->image);
@@ -52,7 +51,7 @@ class GalleryController extends Controller
         $gallery->delete();
 
         return response()->json([
-            'message' => 'Deleted'
+            'message' => 'Deleted',
         ]);
     }
 }

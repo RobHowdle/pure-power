@@ -10,16 +10,6 @@ import BlogPost from "@/Components/BlogPostView.vue";
 import Contact from "@/Components/ContactView.vue";
 import MeetTheTeam from "@/Components/MeetTheTeam.vue";
 import LoginView from "@/Components/LoginView.vue";
-import Dashboard from "@/Pages/Dashboard.vue";
-import PageManager from "@/Pages/PageManager.vue";
-import EditPage from "@/Pages/EditPage.vue";
-
-import AdminArtists from "@/Pages/Artists/Index.vue";
-import EditArtist from "@/Pages/Artists/Edit.vue";
-import AdminGigs from "@/Pages/Admin/Gigs/Index.vue";
-import EditGig from "@/Pages/Admin/Gigs/Edit.vue";
-import AdminBlog from "@/Pages/Blog/Index.vue";
-import EditBlog from "@/Pages/Blog/Edit.vue";
 
 const routes = [
 	{
@@ -75,74 +65,107 @@ const routes = [
 		name: "login",
 		component: LoginView,
 	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Authenticated Routes
+	|--------------------------------------------------------------------------
+	*/
+
 	{
 		path: "/dashboard",
 		name: "dashboard",
-		component: Dashboard,
+		component: () => import("@/Pages/Dashboard.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
 	{
 		path: "/admin/pages",
 		name: "admin.pages",
-		component: PageManager,
+		component: () => import("@/Pages/PageManager.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
 	{
 		path: "/admin/pages/:id/edit",
 		name: "admin.pages.edit",
-		component: EditPage,
+		component: () => import("@/Pages/EditPage.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Artists Admin
+	|--------------------------------------------------------------------------
+	*/
+
 	{
 		path: "/admin/artists",
 		name: "admin.artists",
-		component: AdminArtists,
+		component: () => import("@/Pages/Admin/Artists/Index.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
 	{
 		path: "/admin/artists/:id/edit",
 		name: "admin.artists.edit",
-		component: EditArtist,
+		component: () => import("@/Pages/Admin/Artists/Edit.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Gigs Admin
+	|--------------------------------------------------------------------------
+	*/
+
 	{
 		path: "/admin/gigs",
 		name: "admin.gigs",
-		component: AdminGigs,
+		component: () => import("@/Pages/Admin/Gigs/Index.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
 	{
 		path: "/admin/gigs/:id/edit",
 		name: "admin.gigs.edit",
-		component: EditGig,
+		component: () => import("@/Pages/Admin/Gigs/Edit.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Blog Admin
+	|--------------------------------------------------------------------------
+	*/
+
 	{
 		path: "/admin/blog",
 		name: "admin.blog",
-		component: AdminBlog,
+		component: () => import("@/Pages/Admin/Blogs/Index.vue"),
 		meta: {
 			layout: "authenticated",
 		},
 	},
+
 	{
 		path: "/admin/blog/:id/edit",
 		name: "admin.blog.edit",
-		component: EditBlog,
+		component: () => import("@/Pages/Admin/Blogs/Edit.vue"),
 		meta: {
 			layout: "authenticated",
 		},

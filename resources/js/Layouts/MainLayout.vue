@@ -1,3 +1,107 @@
+<script setup>
+import {ref, onMounted, onUnmounted, nextTick, watch} from "vue";
+import {useRoute} from "vue-router";
+import logo from "@/assets/logo.webp";
+
+const logoRef = ref(null);
+const navItems = [
+	{text: "HOME", slug: "home"},
+	{text: "ABOUT", slug: "about"},
+	{text: "ARTISTS", slug: "artists"},
+	{text: "GIGS", slug: "gigs"},
+	{text: "BLOG", slug: "blog"},
+	{text: "CONTACT", slug: "contact"},
+];
+const navPositions = ref([]);
+
+function calculateNavPositions() {
+	const img = logoRef.value;
+	if (!img) return;
+	const logoHeight = img.offsetHeight;
+	const centerX = 0; // left edge of logo
+	const centerY = logoHeight / 2;
+	const total = navItems.length;
+	const radius = 425;
+	const positions = [];
+	const angleOffset = Math.PI / 100; // ~15 degrees anti-clockwise
+	for (let i = 0; i < total; i++) {
+		// Evenly distribute items along the left half-circle (180deg), rotated anti-clockwise
+		const angle = Math.PI * (i / (total - 1)) - Math.PI / 2 - angleOffset;
+		const x = centerX + radius * Math.cos(angle);
+		const y = centerY + radius * Math.sin(angle);
+		positions.push({left: x, top: y});
+	}
+	navPositions.value = positions;
+}
+
+onMounted(() => {
+	nextTick(() => {
+		calculateNavPositions();
+		window.addEventListener("resize", calculateNavPositions);
+	});
+});
+
+// Clean up listener
+onUnmounted(() => {
+	window.removeEventListener("resize", calculateNavPositions);
+});
+
+const route = useRoute();
+function isActive(slug) {
+	if (slug === "home") return route.name === "home";
+	if (slug === "about")
+		return route.name === "about" || route.name === "meet-the-team";
+	if (slug === "artists")
+		return route.name === "artists" || route.name === "artist";
+	if (slug === "blog")
+		return route.name === "blog" || route.name === "blog-post";
+	return route.name === slug;
+}
+
+const mobileNavOpen = ref(false);
+watch(
+	() => route.fullPath,
+	() => {
+		mobileNavOpen.value = false;
+	},
+);
+
+const veilActive = ref(false);
+let veilTimer = null;
+
+function onBeforeLeave() {
+	veilActive.value = true;
+	if (veilTimer) clearTimeout(veilTimer);
+	veilTimer = setTimeout(() => {
+		veilActive.value = false;
+		veilTimer = null;
+	}, 900);
+}
+
+function onAfterEnter() {
+	if (veilTimer) {
+		clearTimeout(veilTimer);
+		veilTimer = null;
+	}
+	veilActive.value = false;
+}
+
+// Orbit nav items around the right half of the circle
+function navOrbitStyle(idx, total) {
+	// Adjusted angle and center to keep items on screen
+	const minAngle = -95;
+	const maxAngle = 90;
+	const angle = minAngle + (maxAngle - minAngle) * (idx / (total - 1));
+	const radius = 290;
+	const centerX = 300;
+	const centerY = 260;
+	const rad = (angle * Math.PI) / 180;
+	const x = Math.cos(rad) * radius + centerX;
+	const y = Math.sin(rad) * radius + centerY;
+	return `position: absolute; left: ${x}px; top: ${y}px; transform: translate(-50%, -50%); pointer-events: auto; text-shadow: 0 2px 8px #000; letter-spacing: 2px;`;
+}
+</script>
+
 <template>
 	<div class="h-screen w-full max-w-full flex main-layout">
 		<div v-if="veilActive" class="smoke-veil" aria-hidden="true"></div>
@@ -163,110 +267,6 @@
 	</div>
 </template>
 
-<script setup>
-import {ref, onMounted, onUnmounted, nextTick, watch} from "vue";
-import {useRoute} from "vue-router";
-import logo from "@/assets/logo.webp";
-
-const logoRef = ref(null);
-const navItems = [
-	{text: "HOME", slug: "home"},
-	{text: "ABOUT", slug: "about"},
-	{text: "ARTISTS", slug: "artists"},
-	{text: "GIGS", slug: "gigs"},
-	{text: "BLOG", slug: "blog"},
-	{text: "CONTACT", slug: "contact"},
-];
-const navPositions = ref([]);
-
-function calculateNavPositions() {
-	const img = logoRef.value;
-	if (!img) return;
-	const logoHeight = img.offsetHeight;
-	const centerX = 0; // left edge of logo
-	const centerY = logoHeight / 2;
-	const total = navItems.length;
-	const radius = 425;
-	const positions = [];
-	const angleOffset = Math.PI / 100; // ~15 degrees anti-clockwise
-	for (let i = 0; i < total; i++) {
-		// Evenly distribute items along the left half-circle (180deg), rotated anti-clockwise
-		const angle = Math.PI * (i / (total - 1)) - Math.PI / 2 - angleOffset;
-		const x = centerX + radius * Math.cos(angle);
-		const y = centerY + radius * Math.sin(angle);
-		positions.push({left: x, top: y});
-	}
-	navPositions.value = positions;
-}
-
-onMounted(() => {
-	nextTick(() => {
-		calculateNavPositions();
-		window.addEventListener("resize", calculateNavPositions);
-	});
-});
-
-// Clean up listener
-onUnmounted(() => {
-	window.removeEventListener("resize", calculateNavPositions);
-});
-
-const route = useRoute();
-function isActive(slug) {
-	if (slug === "home") return route.name === "home";
-	if (slug === "about")
-		return route.name === "about" || route.name === "meet-the-team";
-	if (slug === "artists")
-		return route.name === "artists" || route.name === "artist";
-	if (slug === "blog")
-		return route.name === "blog" || route.name === "blog-post";
-	return route.name === slug;
-}
-
-const mobileNavOpen = ref(false);
-watch(
-	() => route.fullPath,
-	() => {
-		mobileNavOpen.value = false;
-	},
-);
-
-const veilActive = ref(false);
-let veilTimer = null;
-
-function onBeforeLeave() {
-	veilActive.value = true;
-	if (veilTimer) clearTimeout(veilTimer);
-	veilTimer = setTimeout(() => {
-		veilActive.value = false;
-		veilTimer = null;
-	}, 900);
-}
-
-function onAfterEnter() {
-	if (veilTimer) {
-		clearTimeout(veilTimer);
-		veilTimer = null;
-	}
-	veilActive.value = false;
-}
-
-// Orbit nav items around the right half of the circle
-function navOrbitStyle(idx, total) {
-	// Adjusted angle and center to keep items on screen
-	const minAngle = -95;
-	const maxAngle = 90;
-	const angle = minAngle + (maxAngle - minAngle) * (idx / (total - 1));
-	const radius = 290;
-	const centerX = 300;
-	const centerY = 260;
-	const rad = (angle * Math.PI) / 180;
-	const x = Math.cos(rad) * radius + centerX;
-	const y = Math.sin(rad) * radius + centerY;
-	return `position: absolute; left: ${x}px; top: ${y}px; transform: translate(-50%, -50%); pointer-events: auto; text-shadow: 0 2px 8px #000; letter-spacing: 2px;`;
-}
-</script>
-
 <style scoped>
 @keyframes smokeMove {
 	0% {
@@ -322,7 +322,7 @@ function navOrbitStyle(idx, total) {
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	background-image: url("../assets/smoke.png"), url("../assets/smoke.png");
+	background-image: url("../assets/smoke.avif"), url("../assets/smoke.avif");
 	background-repeat: repeat, repeat;
 	background-size:
 		160% 160%,
@@ -459,7 +459,7 @@ a {
 			rgba(0, 0, 0, 0.15) 55%,
 			rgba(0, 0, 0, 0.6) 100%
 		),
-		url("../assets/smoke.png"), url("../assets/smoke.png");
+		url("../assets/smoke.avif"), url("../assets/smoke.avif");
 
 	background-repeat: no-repeat, repeat, repeat;
 	background-size:

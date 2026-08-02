@@ -60,10 +60,9 @@
 										{{ post.title }}
 									</h2>
 
-									<p
-										class="blog-card-excerpt text-lightGrey font-montserrat text-base break-words">
-										{{ post.excerpt }}
-									</p>
+									<div
+										class="p-6 blog-content text-lightGrey font-montserrat text-base leading-relaxed break-words"
+										v-html="post.content"></div>
 								</div>
 							</article>
 						</router-link>

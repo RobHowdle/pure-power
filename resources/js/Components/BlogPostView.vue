@@ -1,3 +1,99 @@
+<script setup>
+import {computed, onMounted, ref, watch} from "vue";
+import {useRoute} from "vue-router";
+
+const route = useRoute();
+
+const post = ref(null);
+const isLoading = ref(true);
+
+const apiOrigin =
+	import.meta.env.VITE_API_BASE_URL ||
+	import.meta.env.VITE_API_PROXY_TARGET ||
+	"http://127.0.0.1";
+
+const slug = computed(() => {
+	const value = route.params.slug;
+
+	return typeof value === "string" ? value : "";
+});
+
+function formatDate(isoDate) {
+	const date = new Date(isoDate);
+
+	if (Number.isNaN(date.getTime())) {
+		return "DATE TBA";
+	}
+
+	return new Intl.DateTimeFormat("en-GB", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	}).format(date);
+}
+
+function postImageSrc(imageUrl) {
+	if (typeof imageUrl === "string" && imageUrl.trim()) {
+		if (/^(https?:)?\/\//i.test(imageUrl)) {
+			return imageUrl;
+		}
+
+		if (imageUrl.startsWith("/")) {
+			return `${apiOrigin}${imageUrl}`;
+		}
+
+		return `${apiOrigin}/${imageUrl}`;
+	}
+
+	return "/src/assets/logo.webp";
+}
+
+function onPostImageError(event) {
+	const img = event?.target;
+
+	if (!img) {
+		return;
+	}
+
+	if (img.src.endsWith("/src/assets/logo.webp")) {
+		return;
+	}
+
+	img.src = "/src/assets/logo.webp";
+}
+
+async function fetchPost() {
+	if (!slug.value) {
+		post.value = null;
+		isLoading.value = false;
+		return;
+	}
+
+	isLoading.value = true;
+
+	try {
+		const res = await fetch(
+			`${apiOrigin}/api/blog-posts/${encodeURIComponent(slug.value)}`,
+		);
+
+		if (!res.ok) {
+			post.value = null;
+			return;
+		}
+
+		post.value = await res.json();
+	} catch {
+		post.value = null;
+	} finally {
+		isLoading.value = false;
+	}
+}
+
+onMounted(fetchPost);
+
+watch(slug, fetchPost);
+</script>
+
 <template>
 	<main
 		class="flex-1 flex flex-col justify-start px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8 sm:pb-10 w-full max-w-full min-w-0">
@@ -7,6 +103,7 @@
 			<div class="font-imfell text-xl text-darkYellow font-bold mb-2">
 				Loading post...
 			</div>
+
 			<div class="font-montserrat text-base text-lightGrey">
 				Fetching blog post content.
 			</div>
@@ -18,6 +115,7 @@
 			<div class="font-imfell text-xl text-darkYellow font-bold mb-2">
 				Post not found
 			</div>
+
 			<div class="font-montserrat text-base text-lightGrey">
 				That blog post doesn’t exist.
 			</div>
@@ -51,137 +149,154 @@
 					class="w-full h-56 sm:h-72 object-cover"
 					@error="onPostImageError" />
 
-				<div class="p-6">
-					<div
-						v-if="
-							Array.isArray(post.content_blocks) &&
-							post.content_blocks.length
-						"
-						class="flex flex-col gap-5">
-						<template
-							v-for="(block, idx) in post.content_blocks"
-							:key="idx">
-							<p
-								v-if="block?.type === 'paragraph'"
-								class="text-lightGrey font-montserrat text-base leading-relaxed break-words">
-								{{ block.text }}
-							</p>
-
-							<figure
-								v-else-if="block?.type === 'image'"
-								class="w-full"
-								:class="imageFigureClass(block, idx)">
-								<img
-									:src="block.src"
-									:alt="block.alt || ''"
-									class="w-full h-auto object-cover border border-white/30" />
-								<figcaption
-									v-if="block.caption"
-									class="mt-2 text-xs font-montserrat text-lightGrey/90">
-									{{ block.caption }}
-								</figcaption>
-							</figure>
-						</template>
-					</div>
-
-					<div
-						v-else
-						class="text-lightGrey font-montserrat text-base leading-relaxed whitespace-pre-line break-words">
-						{{ post.content ?? post.excerpt }}
-					</div>
-				</div>
+				<div
+					class="p-6 blog-content text-lightGrey font-montserrat text-base leading-relaxed break-words"
+					v-html="post.content"></div>
 			</div>
 		</template>
 	</main>
 </template>
 
-<script setup>
-import {computed, onMounted, ref, watch} from "vue";
-import {useRoute} from "vue-router";
-
-const route = useRoute();
-const post = ref(null);
-const isLoading = ref(true);
-const apiOrigin =
-	import.meta.env.VITE_API_BASE_URL ||
-	import.meta.env.VITE_API_PROXY_TARGET ||
-	"http://127.0.0.1";
-
-const slug = computed(() => {
-	const value = route.params.slug;
-	return typeof value === "string" ? value : "";
-});
-
-function formatDate(isoDate) {
-	const date = new Date(isoDate);
-	if (Number.isNaN(date.getTime())) return "DATE TBA";
-
-	return new Intl.DateTimeFormat("en-GB", {
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-	}).format(date);
+<style scoped>
+.blog-content :deep(h1),
+.blog-content :deep(h2),
+.blog-content :deep(h3) {
+	font-family: "IM Fell DW Pica", serif;
+	color: #e58d37;
+	font-weight: bold;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
 }
 
-function postImageSrc(imageUrl) {
-	if (typeof imageUrl === "string" && imageUrl.trim()) {
-		if (/^(https?:)?\/\//i.test(imageUrl)) return imageUrl;
-		if (imageUrl.startsWith("/")) return `${apiOrigin}${imageUrl}`;
-		return `${apiOrigin}/${imageUrl}`;
-	}
-
-	return "/src/assets/logo.webp";
+.blog-content :deep(h1) {
+	font-size: 2.5rem;
 }
 
-function onPostImageError(event) {
-	const img = event?.target;
-	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.webp")) return;
-	img.src = "/src/assets/logo.webp";
+.blog-content :deep(h2) {
+	font-size: 2rem;
 }
 
-async function fetchPost() {
-	if (!slug.value) {
-		post.value = null;
-		isLoading.value = false;
-		return;
-	}
-
-	isLoading.value = true;
-
-	try {
-		const res = await fetch(
-			`${apiOrigin}/api/blog-posts/${encodeURIComponent(slug.value)}`,
-		);
-
-		if (!res.ok) {
-			post.value = null;
-			return;
-		}
-
-		post.value = await res.json();
-		console.log(post.value);
-	} catch {
-		post.value = null;
-	} finally {
-		isLoading.value = false;
-	}
+.blog-content :deep(h3) {
+	font-size: 1.5rem;
 }
 
-onMounted(fetchPost);
-watch(slug, fetchPost);
-
-function imageFigureClass(block, idx) {
-	// Allow explicit alignment via data; otherwise alternate for a more natural layout.
-	const align = block?.align;
-	if (align === "full") return "max-w-full";
-	if (align === "left") return "md:max-w-2xl md:mr-auto";
-	if (align === "right") return "md:max-w-2xl md:ml-auto";
-	if (align === "center") return "md:max-w-3xl md:mx-auto";
-
-	const mod = idx % 3;
-	if (mod === 0) return "md:max-w-3xl md:mx-auto";
-	if (mod === 1) return "md:max-w-2xl md:mr-auto";
-	return "md:max-w-2xl md:ml-auto";
+.blog-content :deep(p) {
+	margin-bottom: 1rem;
+	line-height: 1.7;
 }
-</script>
+
+.blog-content :deep(a) {
+	color: #e58d37;
+	text-decoration: underline;
+}
+
+.blog-content :deep(ul) {
+	list-style: disc;
+	padding-left: 2rem;
+	margin-bottom: 1rem;
+}
+
+.blog-content :deep(ol) {
+	list-style: decimal;
+	padding-left: 2rem;
+	margin-bottom: 1rem;
+}
+
+.blog-content :deep(blockquote) {
+	border-left: 4px solid #e58d37;
+	padding-left: 1rem;
+	margin: 1.5rem 0;
+	opacity: 0.8;
+}
+
+.blog-content :deep(img) {
+	max-width: 100%;
+	height: auto;
+	margin: 2rem auto;
+	display: block;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.blog-content :deep(img) {
+	display: block;
+	height: auto;
+	max-width: 100%;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* TipTap image alignment */
+.blog-content :deep(img[data-align="left"]) {
+	margin-left: 0;
+	margin-right: auto;
+}
+
+.blog-content :deep(img[data-align="center"]) {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.blog-content :deep(img[data-align="right"]) {
+	margin-left: auto;
+	margin-right: 0;
+}
+
+/* Headings from TipTap */
+.blog-content :deep(h1),
+.blog-content :deep(h2),
+.blog-content :deep(h3) {
+	font-family: "IM Fell DW Pica", serif;
+	color: #e58d37;
+	font-weight: bold;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.blog-content :deep(h1) {
+	font-size: 2.5rem;
+}
+
+.blog-content :deep(h2) {
+	font-size: 2rem;
+}
+
+.blog-content :deep(h3) {
+	font-size: 1.5rem;
+}
+
+/* Paragraph spacing */
+.blog-content :deep(p) {
+	margin-bottom: 1rem;
+}
+
+/* Lists */
+.blog-content :deep(ul),
+.blog-content :deep(ol) {
+	padding-left: 2rem;
+	margin-bottom: 1rem;
+}
+
+.blog-content :deep(ul) {
+	list-style-type: disc;
+}
+
+.blog-content :deep(ol) {
+	list-style-type: decimal;
+}
+
+/* Quotes */
+.blog-content :deep(blockquote) {
+	border-left: 3px solid #e58d37;
+	padding-left: 1rem;
+	margin: 1.5rem 0;
+	font-style: italic;
+	opacity: 0.85;
+}
+
+/* Links */
+.blog-content :deep(a) {
+	color: #e58d37;
+	text-decoration: underline;
+}
+</style>

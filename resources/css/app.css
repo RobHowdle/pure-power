@@ -59,17 +59,8 @@ select {
 	box-shadow: 0 0 20px rgba(229, 141, 55, 0.15);
 }
 
-.admin-nav-link {
-	@apply text-sm text-white/80 transition-colors;
-}
-
 .admin-nav-link:hover {
 	@apply text-white;
-}
-
-.admin-nav-link.router-link-active {
-	@apply font-bold text-darkYellow;
-	position: relative;
 }
 
 .admin-nav-link.router-link-active::after {
@@ -80,4 +71,12 @@ select {
 	bottom: -8px;
 	height: 2px;
 	background: currentColor;
+}
+
+.admin-nav-link {
+	@apply text-white/70 transition hover:text-white;
+}
+
+.admin-nav-link.active {
+	@apply text-darkYellow;
 }

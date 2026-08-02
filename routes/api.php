@@ -1,16 +1,17 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArtistController;
-use App\Http\Controllers\BlogPostController;
-use App\Http\Controllers\GigController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\PublicArtistController;
 use App\Http\Controllers\Api\PublicBlogPostController;
 use App\Http\Controllers\Api\PublicGigController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\BlogImageController;
+use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\GigController;
+use App\Http\Controllers\PageController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/pages', [PageController::class, 'index']);
 Route::get('/pages/{slug}', [PageController::class, 'show']);
@@ -49,6 +50,7 @@ Route::prefix('admin')->group(function () {
     Route::patch('/blog/{blogPost}', [BlogPostController::class, 'update']);
     Route::delete('/blog/{blogPost}', [BlogPostController::class, 'destroy']);
     Route::patch('/blog/{blogPost}/toggle-hidden', [BlogPostController::class, 'toggleHidden']);
+    Route::post('/blog-images', [BlogImageController::class, 'store']);
 });
 Route::get('/gigs/latest', [PublicGigController::class, 'latest']);
 Route::get('/gigs/upcoming', [PublicGigController::class, 'upcoming']);

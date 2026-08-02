@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 
 class BlogPostController extends Controller
 {
@@ -33,6 +34,26 @@ class BlogPostController extends Controller
             'content' => 'nullable|string',
             'featured_image' => 'nullable|image|max:20480',
         ]);
+
+        $validated['content'] = Purifier::clean(
+            $validated['content'] ?? '',
+            $this->blogContentPurifierConfig(),
+            function ($config): void {
+                if ($definition = $config->maybeGetRawHTMLDefinition()) {
+                    $definition->addAttribute(
+                        'img',
+                        'data-align',
+                        'Enum#left,center,right'
+                    );
+
+                    $definition->addAttribute(
+                        'img',
+                        'data-caption',
+                        'Text'
+                    );
+                }
+            }
+        );
 
         $validated['slug'] = $this->generateUniqueSlug(
             $validated['slug'] ?? null,
@@ -68,11 +89,31 @@ class BlogPostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:blog_posts,slug,' . $blogPost->id,
+            'slug' => 'nullable|string|max:255|unique:blog_posts,slug,'.$blogPost->id,
             'status' => 'required|in:draft,published',
             'content' => 'nullable|string',
             'featured_image' => 'nullable|image|max:20480',
         ]);
+
+        $validated['content'] = Purifier::clean(
+            $validated['content'] ?? '',
+            $this->blogContentPurifierConfig(),
+            function ($config): void {
+                if ($definition = $config->maybeGetRawHTMLDefinition()) {
+                    $definition->addAttribute(
+                        'img',
+                        'data-align',
+                        'Enum#left,center,right'
+                    );
+
+                    $definition->addAttribute(
+                        'img',
+                        'data-caption',
+                        'Text'
+                    );
+                }
+            }
+        );
 
         $validated['slug'] = $this->generateUniqueSlug(
             $validated['slug'] ?? null,
@@ -173,12 +214,12 @@ class BlogPostController extends Controller
 
         while (
             BlogPost::query()
-            ->when(
-                $ignoreId,
-                fn($query) => $query->whereKeyNot($ignoreId)
-            )
-            ->where('slug', $slug)
-            ->exists()
+                ->when(
+                    $ignoreId,
+                    fn ($query) => $query->whereKeyNot($ignoreId)
+                )
+                ->where('slug', $slug)
+                ->exists()
         ) {
             $slug = "{$base}-{$counter}";
             $counter++;
@@ -196,5 +237,46 @@ class BlogPostController extends Controller
         }
 
         return Str::limit($plain, 100, '...');
+    }
+
+    private function blogContentPurifierConfig(): array
+    {
+        return [
+            'HTML.Doctype' => 'HTML 4.01 Transitional',
+            'HTML.Allowed' => implode(',', [
+                'h1',
+                'h2',
+                'h3',
+                'p',
+                'strong',
+                'em',
+                'u',
+                's',
+                'ul',
+                'ol',
+                'li',
+                'blockquote',
+                'pre',
+                'a[href|target]',
+                'br',
+                'img[src|alt|title|width|height|style|data-align|data-caption]',
+            ]),
+            'CSS.AllowedProperties' => implode(',', [
+                'font',
+                'font-size',
+                'font-weight',
+                'font-style',
+                'font-family',
+                'text-decoration',
+                'padding-left',
+                'color',
+                'background-color',
+                'text-align',
+                'width',
+                'height',
+            ]),
+            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.RemoveEmpty' => true,
+        ];
     }
 }
