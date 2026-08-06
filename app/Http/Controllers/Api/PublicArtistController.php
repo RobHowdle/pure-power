@@ -17,14 +17,13 @@ class PublicArtistController extends Controller
                 ->where('status', 'published')
                 ->orderBy('name')
                 ->get()
-                ->map(fn(Artist $artist) => $this->transformArtist($artist, false))
+                ->map(fn (Artist $artist) => $this->transformArtist($artist, false))
                 ->values()
                 ->all();
         });
 
         return response()->json($artists);
     }
-
 
     public function show(string $slug): JsonResponse
     {
@@ -35,9 +34,9 @@ class PublicArtistController extends Controller
             ->where('slug', $slug)
             ->first();
 
-        if (!$artist) {
+        if (! $artist) {
             return response()->json([
-                'message' => 'Artist not found'
+                'message' => 'Artist not found',
             ], 404);
         }
 
@@ -45,7 +44,6 @@ class PublicArtistController extends Controller
             $this->transformArtist($artist, true)
         );
     }
-
 
     private function transformArtist(Artist $artist, bool $withDetails): array
     {
@@ -62,7 +60,7 @@ class PublicArtistController extends Controller
         $gallery = $withDetails
             ? $artist->gallery->map(fn ($image) => [
                 'id' => $image->id,
-                'url' => '/storage/' . $image->image,
+                'url' => '/storage/'.$image->image,
             ])->values()
             : collect();
 
@@ -71,14 +69,13 @@ class PublicArtistController extends Controller
             : null;
 
         $featuredGalleryImage = $featuredGalleryFile
-            ? '/storage/' . $featuredGalleryFile
+            ? '/storage/'.$featuredGalleryFile
             : null;
 
         $cardImageUrl = $artist->logo_url ?: $artist->image_url;
 
         // Prefer dedicated hero image for modal, then featured gallery image, then logo.
         $modalImageUrl = $artist->image_url ?: $featuredGalleryImage ?: $artist->logo_url;
-
 
         $payload = [
             'id' => $artist->id,
@@ -93,7 +90,6 @@ class PublicArtistController extends Controller
             'links' => $links,
             'logo_url' => $artist->logo_url,
         ];
-
 
         if ($withDetails) {
 
@@ -110,7 +106,6 @@ class PublicArtistController extends Controller
 
             ];
         }
-
 
         return $payload;
     }

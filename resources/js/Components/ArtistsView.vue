@@ -25,7 +25,13 @@
 						<div class="relative min-h-48 overflow-hidden">
 							<div class="absolute inset-0 bg-black/20">
 								<img
-									:src="artistImageSrc(artist.card_image_url || artist.logo_url || artist.image_url)"
+									:src="
+										artistImageSrc(
+											artist.card_image_url ||
+												artist.logo_url ||
+												artist.image_url,
+										)
+									"
 									:alt="artist.name"
 									class="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition duration-500"
 									@error="onArtistImageError" />
