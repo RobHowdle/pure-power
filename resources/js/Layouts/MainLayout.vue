@@ -450,8 +450,8 @@ a {
 }
 
 .layout-gutter {
-	padding-left: max(2rem, env(safe-area-inset-left));
-	padding-right: max(2rem, env(safe-area-inset-right));
+	padding-left: max(1rem, env(safe-area-inset-left));
+	padding-right: max(1rem, env(safe-area-inset-right));
 }
 
 .smoke-veil {

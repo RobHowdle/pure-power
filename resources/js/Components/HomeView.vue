@@ -193,7 +193,7 @@ onMounted(async () => {
 
 <template>
 	<main
-		class="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
+		class="flex-1 flex flex-col justify-center sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
 		<div class="w-full max-w-[1600px] mx-auto min-w-0">
 			<h1
 				class="text-3xl sm:text-4xl lg:text-5xl leading-tight font-bold text-darkYellow mb-6 tracking-wide font-imfell uppercase text-shadow-lightGrey break-words">

@@ -96,7 +96,7 @@ watch(slug, fetchPost);
 
 <template>
 	<main
-		class="flex-1 flex flex-col justify-start px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8 sm:pb-10 w-full max-w-full min-w-0">
+		class="flex-1 flex flex-col justify-start sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8 sm:pb-10 w-full max-w-full min-w-0">
 		<div
 			v-if="isLoading"
 			class="border border-white bg-black bg-opacity-70 p-6">

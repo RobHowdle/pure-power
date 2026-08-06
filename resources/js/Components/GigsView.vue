@@ -1,6 +1,6 @@
 <template>
 	<main
-		class="flex-1 flex flex-col justify-start md:justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
+		class="flex-1 flex flex-col justify-start md:justify-center sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
 		<h1
 			class="text-3xl sm:text-4xl lg:text-5xl leading-tight font-bold text-darkYellow mb-6 tracking-wide font-imfell uppercase text-shadow-lightGrey break-words">
 			GIGS
@@ -201,7 +201,8 @@ const isLoading = ref(true);
 const apiOrigin =
 	import.meta.env.VITE_API_BASE_URL ||
 	import.meta.env.VITE_API_PROXY_TARGET ||
-	"http://127.0.0.1";
+	import.meta.env.VITE_APP_URL ||
+	window.location.origin;
 
 const nextGig = computed(() => gigs.value[0] ?? null);
 const rest = computed(() => gigs.value.slice(1));

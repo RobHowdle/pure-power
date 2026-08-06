@@ -124,7 +124,7 @@ onMounted(() => {
 
 <template>
 	<div class="py-10 sm:py-12">
-		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 			<section
 				class="overflow-hidden border border-white/10 bg-linear-to-br from-white/10 via-black/60 to-yellow-500/10 p-6 shadow-2xl shadow-black/30 backdrop-blur sm:p-8">
 				<div

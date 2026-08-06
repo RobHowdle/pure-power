@@ -1,6 +1,6 @@
 <template>
 	<main
-		class="flex-1 flex flex-col justify-start md:flex-col md:justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
+		class="flex-1 flex flex-col justify-start md:flex-col md:justify-center sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
 		<header class="max-w-5xl">
 			<h1
 				class="text-3xl sm:text-4xl lg:text-5xl leading-tight font-bold text-darkYellow tracking-wide font-imfell uppercase break-words">

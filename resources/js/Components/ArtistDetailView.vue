@@ -1,6 +1,6 @@
 <template>
 	<main
-		class="flex-1 flex flex-col justify-start md:justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
+		class="flex-1 flex flex-col justify-start md:justify-center sm:px-6 lg:px-8 py-8 sm:py-10 w-full max-w-full min-w-0">
 		<div class="max-w-5xl w-full">
 			<div class="flex items-center gap-4">
 				<button

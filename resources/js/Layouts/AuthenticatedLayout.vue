@@ -37,7 +37,7 @@ async function logout() {
 	<div class="auth-shell">
 		<div class="min-h-screen text-white">
 			<nav class="border-b border-white/10 bg-black/65 backdrop-blur">
-				<div class="mx-auto max-w-7xl px-8">
+				<div class="mx-auto max-w-7xl px-4 sm:px-8">
 					<div class="flex h-16 justify-between">
 						<div class="flex items-center gap-8">
 							<RouterLink to="/" target="_blank">
@@ -203,7 +203,7 @@ async function logout() {
 }
 
 .layout-gutter {
-	padding-left: max(2rem, env(safe-area-inset-left));
-	padding-right: max(2rem, env(safe-area-inset-right));
+	padding-left: max(1rem, env(safe-area-inset-left));
+	padding-right: max(1rem, env(safe-area-inset-right));
 }
 </style>

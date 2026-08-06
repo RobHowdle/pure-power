@@ -108,15 +108,15 @@ onUnmounted(() => {
 <template>
 	<div
 		v-if="open && gig"
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8 backdrop-blur-sm"
+		class="fixed inset-0 z-50 overflow-y-auto bg-black/80 px-4 py-4 backdrop-blur-sm md:flex md:items-center md:justify-center md:py-8"
 		role="dialog"
 		aria-modal="true"
 		aria-label="Gig details"
 		@click="handleBackdropClick">
 		<div
-			class="w-full max-w-5xl overflow-hidden border border-white/20 bg-black/95 shadow-xl">
-			<div class="grid max-h-[85vh] grid-cols-1 md:grid-cols-2">
-				<div class="min-h-[220px] md:min-h-[500px]">
+			class="my-auto w-full max-w-5xl overflow-hidden border border-white/20 bg-black/95 shadow-xl">
+			<div class="grid grid-cols-1 md:max-h-[85vh] md:grid-cols-2">
+				<div class="h-[38vh] min-h-[220px] md:h-auto md:min-h-[500px]">
 					<img
 						:src="imageSrc"
 						:alt="gig.title || 'Gig poster'"
@@ -124,7 +124,7 @@ onUnmounted(() => {
 				</div>
 
 				<div
-					class="flex max-h-[85vh] flex-col overflow-y-auto p-6 md:p-8">
+					class="flex flex-col p-5 sm:p-6 md:max-h-[85vh] md:overflow-y-auto md:p-8">
 					<div class="flex items-start justify-between gap-4">
 						<h2
 							class="font-imfell text-2xl font-bold uppercase tracking-wide text-darkYellow">

@@ -76,6 +76,7 @@ class PublicGigController extends Controller
             'poster_image_url' => $data['poster_image_url'] ?? null,
             'artists_playing' => $data['artists_playing'] ?? $gig->excerpt,
             'excerpt' => $gig->excerpt,
+            'content' => $gig->content,
         ];
     }
 }
