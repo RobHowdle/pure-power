@@ -140,9 +140,9 @@ const save = () => {
 
 			<div>
 				<AdminFileInput
-					label="Artist Image"
+					label="Artist Popup Image (Large)"
 					accept="image/*"
-					help="Max file size: 20MB"
+					help="Used in artist popup/detail view. Max file size: 20MB. If Card Image is not uploaded, this file will also refresh it automatically."
 					@change="onImageSelected" />
 
 				<p v-if="artist.image_url" class="mt-2 text-xs text-white/55">
@@ -159,9 +159,9 @@ const save = () => {
 
 			<div>
 				<AdminFileInput
-					label="Artist Logo"
+					label="Artist Card Image (Small)"
 					accept="image/*"
-					help="Max file size: 20MB"
+					help="Used on artist cards/listings. Optional override; leave empty to auto-generate from Popup Image."
 					@change="onLogoSelected" />
 
 				<p v-if="artist.logo_url" class="mt-2 text-xs text-white/55">

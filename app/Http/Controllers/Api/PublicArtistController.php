@@ -59,6 +59,26 @@ class PublicArtistController extends Controller
             ? $data['links']
             : [];
 
+        $gallery = $withDetails
+            ? $artist->gallery->map(fn ($image) => [
+                'id' => $image->id,
+                'url' => '/storage/' . $image->image,
+            ])->values()
+            : collect();
+
+        $featuredGalleryFile = $withDetails
+            ? optional($artist->gallery->firstWhere('featured', true) ?? $artist->gallery->first())->image
+            : null;
+
+        $featuredGalleryImage = $featuredGalleryFile
+            ? '/storage/' . $featuredGalleryFile
+            : null;
+
+        $cardImageUrl = $artist->logo_url ?: $artist->image_url;
+
+        // Prefer dedicated hero image for modal, then featured gallery image, then logo.
+        $modalImageUrl = $artist->image_url ?: $featuredGalleryImage ?: $artist->logo_url;
+
 
         $payload = [
             'id' => $artist->id,
@@ -66,6 +86,8 @@ class PublicArtistController extends Controller
             'slug' => $artist->slug,
             'image_url' => $artist->image_url,
             'hero' => $artist->image_url,
+            'card_image_url' => $cardImageUrl,
+            'modal_image_url' => $modalImageUrl,
             'tagline' => $artist->excerpt ?? ($data['tagline'] ?? null),
             'genres' => $genres,
             'links' => $links,
@@ -84,10 +106,7 @@ class PublicArtistController extends Controller
 
                 'epk_url' => $artist->epk_file,
 
-                'gallery' => $artist->gallery->map(fn($image) => [
-                    'id' => $image->id,
-                    'url' => '/storage/' . $image->image,
-                ])->values(),
+                'gallery' => $gallery,
 
             ];
         }

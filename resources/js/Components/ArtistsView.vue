@@ -25,7 +25,7 @@
 						<div class="relative min-h-48 overflow-hidden">
 							<div class="absolute inset-0 bg-black/20">
 								<img
-									:src="artistImageSrc(artist.logo_url)"
+									:src="artistImageSrc(artist.card_image_url || artist.logo_url || artist.image_url)"
 									:alt="artist.name"
 									class="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition duration-500"
 									@error="onArtistImageError" />
@@ -88,7 +88,7 @@
 			class="fixed inset-0 z-50 flex items-center justify-center px-4 py-6 bg-black/80"
 			@click.self="closeArtistModal">
 			<div
-				class="w-full max-w-3xl max-h-[85vh] flex flex-col border border-white/25 bg-charcoal overflow-hidden"
+				class="w-full max-w-2xl max-h-[85vh] flex flex-col border border-white/25 bg-charcoal overflow-hidden"
 				style="box-shadow: 0 0 32px rgba(0, 0, 0, 0.8)">
 				<div
 					class="flex items-center justify-between px-5 py-4 border-b border-white/10">
@@ -125,7 +125,7 @@
 							<div
 								class="border border-white/15 bg-black/30 h-56 sm:h-full">
 								<img
-									:src="artistImageSrc(modalArtist.image_url)"
+									:src="artistImageSrc(modalPrimaryImage)"
 									:alt="modalArtist.name"
 									class="w-full h-56 sm:h-full object-cover" />
 							</div>
@@ -224,6 +224,19 @@ const isModalLoading = ref(false);
 
 const modalArtist = ref(null);
 const modalView = ref("artist");
+
+const modalPrimaryImage = computed(() => {
+	const artist = modalArtist.value;
+	if (!artist) return null;
+
+	return (
+		artist.modal_image_url ||
+		artist.image_url ||
+		artist.logo_url ||
+		artist.gallery?.[0]?.url ||
+		null
+	);
+});
 
 const artistsHeading = computed(() => {
 	const headingBlock = blocks.value.find((b) => b.type === "page_heading");

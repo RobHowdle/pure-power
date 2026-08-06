@@ -64,9 +64,15 @@ class ArtistController extends Controller
         if ($request->hasFile('image')) {
 
             $validated['image_url'] = $this->saveOptimisedImage(
-                $request->file('image'),
-                'artists'
+                $request->file('image')
             );
+
+            // If no dedicated card image is uploaded, derive one from the hero image upload.
+            if (! $request->hasFile('logo')) {
+                $validated['logo_url'] = $this->saveOptimisedCardImage(
+                    $request->file('image')
+                );
+            }
         }
 
         /*
@@ -150,9 +156,17 @@ class ArtistController extends Controller
             $this->deletePublicFile($artist->image_url);
 
             $validated['image_url'] = $this->saveOptimisedImage(
-                $request->file('image'),
-                'artists'
+                $request->file('image')
             );
+
+            // Keep card and popup images in sync by default when only one file is uploaded.
+            if (! $request->hasFile('logo')) {
+                $this->deletePublicFile($artist->logo_url);
+
+                $validated['logo_url'] = $this->saveOptimisedCardImage(
+                    $request->file('image')
+                );
+            }
         }
 
         /*
@@ -230,15 +244,12 @@ class ArtistController extends Controller
     }
 
     private function saveOptimisedImage(
-        UploadedFile $file,
-        string $directory
+        UploadedFile $file
     ): string {
 
         $filename = Str::uuid().'.webp';
 
-        $path = storage_path(
-            "app/public/{$directory}/thumbs"
-        );
+        $path = storage_path('app/public/artists/hero');
 
         if (! file_exists($path)) {
             mkdir($path, 0755, true);
@@ -249,15 +260,41 @@ class ArtistController extends Controller
         );
 
         $manager->decode($file)
-            ->cover(400, 300)
-            ->encode(new WebpEncoder(quality: 75))
+            ->scaleDown(1600)
+            ->encode(new WebpEncoder(quality: 88))
             ->save(
                 "{$path}/{$filename}"
             );
 
         return Storage::url(
-            "{$directory}/thumbs/{$filename}"
+            "artists/hero/{$filename}"
         );
+    }
+
+    private function saveOptimisedCardImage(
+        UploadedFile $file
+    ): string {
+
+        $filename = Str::uuid().'.webp';
+
+        $directory = storage_path('app/public/artists/logos');
+
+        if (! file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        $manager = new ImageManager(
+            new Driver
+        );
+
+        $manager->decode($file)
+            ->cover(800, 800)
+            ->encode(new WebpEncoder(quality: 85))
+            ->save(
+                "{$directory}/{$filename}"
+            );
+
+        return Storage::url("artists/logos/{$filename}");
     }
 
     private function saveOptimisedLogo(

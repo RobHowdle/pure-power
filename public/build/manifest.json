@@ -1,10 +1,6 @@
 {
-  "_AdminBlogEditor-B47SfcaR.css": {
-    "file": "assets/AdminBlogEditor-B47SfcaR.css",
-    "src": "_AdminBlogEditor-B47SfcaR.css"
-  },
-  "_AdminBlogEditor-BfJVFMky.js": {
-    "file": "assets/AdminBlogEditor-BfJVFMky.js",
+  "_AdminBlogEditor-2ZX_HlvU.js": {
+    "file": "assets/AdminBlogEditor-2ZX_HlvU.js",
     "name": "AdminBlogEditor",
     "imports": [
       "resources/js/app.js"
@@ -13,53 +9,57 @@
       "assets/AdminBlogEditor-B47SfcaR.css"
     ]
   },
-  "_AdminCreatePanel-AkEjcrq_.js": {
-    "file": "assets/AdminCreatePanel-AkEjcrq_.js",
+  "_AdminBlogEditor-B47SfcaR.css": {
+    "file": "assets/AdminBlogEditor-B47SfcaR.css",
+    "src": "_AdminBlogEditor-B47SfcaR.css"
+  },
+  "_AdminCreatePanel-DcZoS3wo.js": {
+    "file": "assets/AdminCreatePanel-DcZoS3wo.js",
     "name": "AdminCreatePanel",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_AdminFileInput-BuA54tew.js": {
-    "file": "assets/AdminFileInput-BuA54tew.js",
+  "_AdminFileInput-sfeOQCBB.js": {
+    "file": "assets/AdminFileInput-sfeOQCBB.js",
     "name": "AdminFileInput",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_BlogForm-DCrKxkeh.js": {
-    "file": "assets/BlogForm-DCrKxkeh.js",
+  "_BlogForm-6RjDoNlX.js": {
+    "file": "assets/BlogForm-6RjDoNlX.js",
     "name": "BlogForm",
     "imports": [
       "resources/js/app.js",
-      "_AdminFileInput-BuA54tew.js",
-      "_AdminBlogEditor-BfJVFMky.js"
+      "_AdminFileInput-sfeOQCBB.js",
+      "_AdminBlogEditor-2ZX_HlvU.js"
     ]
   },
-  "_GigForm-D9FhL5Oc.js": {
-    "file": "assets/GigForm-D9FhL5Oc.js",
+  "_GigForm-KSKRn_Cs.js": {
+    "file": "assets/GigForm-KSKRn_Cs.js",
     "name": "GigForm",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_LoadingSpinner-DjdG5wEy.js": {
-    "file": "assets/LoadingSpinner-DjdG5wEy.js",
+  "_LoadingSpinner-DB9z1rfq.js": {
+    "file": "assets/LoadingSpinner-DB9z1rfq.js",
     "name": "LoadingSpinner",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_PageForm-Cl8DXtzM.js": {
-    "file": "assets/PageForm-Cl8DXtzM.js",
+  "_PageForm-B8erTuM0.js": {
+    "file": "assets/PageForm-B8erTuM0.js",
     "name": "PageForm",
     "imports": [
       "resources/js/app.js",
-      "_AdminBlogEditor-BfJVFMky.js"
+      "_AdminBlogEditor-2ZX_HlvU.js"
     ]
   },
-  "_apiError-eXxrxLHI.js": {
-    "file": "assets/apiError-eXxrxLHI.js",
+  "_apiError-C8RuRvPw.js": {
+    "file": "assets/apiError-C8RuRvPw.js",
     "name": "apiError",
     "imports": [
       "resources/js/app.js"
@@ -109,8 +109,8 @@
     "file": "assets/montserrat-700-normal-BdjcYUrC.woff2",
     "src": "_montserrat-700-normal-BdjcYUrC.woff2"
   },
-  "_useConfirmDelete-CCZIPCEF.js": {
-    "file": "assets/useConfirmDelete-CCZIPCEF.js",
+  "_useConfirmDelete-BIp_5tv5.js": {
+    "file": "assets/useConfirmDelete-BIp_5tv5.js",
     "name": "useConfirmDelete",
     "imports": [
       "resources/js/app.js"
@@ -126,120 +126,120 @@
     "isEntry": true
   },
   "resources/js/Pages/Admin/Artists/Edit.vue": {
-    "file": "assets/Edit-BcJ2MecD.js",
+    "file": "assets/Edit-C8m00Vp_.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Artists/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_LoadingSpinner-DjdG5wEy.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_AdminFileInput-BuA54tew.js"
+      "_LoadingSpinner-DB9z1rfq.js",
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_AdminFileInput-sfeOQCBB.js"
     ]
   },
   "resources/js/Pages/Admin/Artists/Index.vue": {
-    "file": "assets/Index-BmqsUV4m.js",
+    "file": "assets/Index-QP-3DHdd.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Artists/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_AdminCreatePanel-AkEjcrq_.js"
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_AdminCreatePanel-DcZoS3wo.js"
     ]
   },
   "resources/js/Pages/Admin/Blogs/Edit.vue": {
-    "file": "assets/Edit-encDKvr6.js",
+    "file": "assets/Edit-CtZulTbl.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Blogs/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_LoadingSpinner-DjdG5wEy.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_BlogForm-DCrKxkeh.js"
+      "_LoadingSpinner-DB9z1rfq.js",
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_BlogForm-6RjDoNlX.js"
     ]
   },
   "resources/js/Pages/Admin/Blogs/Index.vue": {
-    "file": "assets/Index-96n93I9m.js",
+    "file": "assets/Index-CzKhbbfd.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Blogs/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_AdminCreatePanel-AkEjcrq_.js",
-      "_BlogForm-DCrKxkeh.js"
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_AdminCreatePanel-DcZoS3wo.js",
+      "_BlogForm-6RjDoNlX.js"
     ]
   },
   "resources/js/Pages/Admin/Gigs/Edit.vue": {
-    "file": "assets/Edit-Bm3_VUZ0.js",
+    "file": "assets/Edit-CAHL7j2S.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Gigs/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_LoadingSpinner-DjdG5wEy.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_GigForm-D9FhL5Oc.js"
+      "_LoadingSpinner-DB9z1rfq.js",
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_GigForm-KSKRn_Cs.js"
     ]
   },
   "resources/js/Pages/Admin/Gigs/Index.vue": {
-    "file": "assets/Index-BZOK8Oau.js",
+    "file": "assets/Index-CtoY1Jjw.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Gigs/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_AdminCreatePanel-AkEjcrq_.js",
-      "_GigForm-D9FhL5Oc.js"
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_AdminCreatePanel-DcZoS3wo.js",
+      "_GigForm-KSKRn_Cs.js"
     ]
   },
   "resources/js/Pages/Admin/Pages/Edit.vue": {
-    "file": "assets/Edit-CNDxD7AA.js",
+    "file": "assets/Edit-Sr3wUO7D.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Pages/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_LoadingSpinner-DjdG5wEy.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_PageForm-Cl8DXtzM.js"
+      "_LoadingSpinner-DB9z1rfq.js",
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_PageForm-B8erTuM0.js"
     ]
   },
   "resources/js/Pages/Admin/Pages/Index.vue": {
-    "file": "assets/Index-CX5D1_Af.js",
+    "file": "assets/Index-DzHTWn_g.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Pages/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_useConfirmDelete-CCZIPCEF.js",
-      "_apiError-eXxrxLHI.js",
-      "_AdminCreatePanel-AkEjcrq_.js",
-      "_PageForm-Cl8DXtzM.js"
+      "_useConfirmDelete-BIp_5tv5.js",
+      "_apiError-C8RuRvPw.js",
+      "_AdminCreatePanel-DcZoS3wo.js",
+      "_PageForm-B8erTuM0.js"
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-DrTtp8xQ.js",
+    "file": "assets/Dashboard-DJIvw0Fc.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_apiError-eXxrxLHI.js"
+      "_apiError-C8RuRvPw.js"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Byyz-BSZ.js",
+    "file": "assets/app-si1DdZeG.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
