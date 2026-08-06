@@ -173,118 +173,136 @@ const submit = () => {
 </script>
 
 <template>
-	<form @submit.prevent="submit" class="space-y-4">
-		<input
-			v-model="title"
-			type="text"
-			placeholder="Title"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25"
-			required />
+	<div class="border border-white/10 bg-black/60 p-6 backdrop-blur">
+		<div class="mb-6">
+			<h2 class="text-xl font-bold text-white">
+				{{ gig ? "Edit Gig" : "Create Gig" }}
+			</h2>
 
-		<input
-			v-model="slug"
-			@input="onSlugInput"
-			type="text"
-			placeholder="Slug (e.g. london-2026-03-15)"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25" />
-
-		<div class="grid gap-4 sm:grid-cols-2">
-			<input
-				v-model="startsAt"
-				type="datetime-local"
-				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-
-			<input
-				v-model="endsAt"
-				type="datetime-local"
-				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-		</div>
-
-		<div class="grid gap-4 sm:grid-cols-2">
-			<input
-				v-model="venue"
-				type="text"
-				placeholder="Venue (optional)"
-				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-
-			<input
-				v-model="city"
-				type="text"
-				placeholder="City (optional)"
-				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-		</div>
-
-		<input
-			v-model="country"
-			type="text"
-			placeholder="Country"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-
-		<input
-			v-model="ticketUrl"
-			type="url"
-			placeholder="Ticket Link"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-
-		<textarea
-			v-model="artistsPlaying"
-			rows="3"
-			placeholder="Artists Playing"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white"></textarea>
-
-		<textarea
-			v-model="content"
-			rows="8"
-			placeholder="Gig content / description"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white"></textarea>
-
-		<div>
-			<label
-				class="block text-xs font-bold uppercase tracking-widest text-white/75">
-				Poster Image
-			</label>
-
-			<input
-				ref="posterInput"
-				type="file"
-				accept="image/*"
-				@change="onPosterImageSelected"
-				class="mt-2 w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
-
-			<p
-				v-if="gig?.data?.poster_image_url"
-				class="mt-2 text-xs text-white/55">
-				Current poster:
-				<a
-					:href="gig.data.poster_image_url"
-					target="_blank"
-					class="text-darkYellow hover:text-lightYellow">
-					View current upload
-				</a>
+			<p class="mt-1 text-sm text-white/60">
+				Manage event details, schedule, and publication status.
 			</p>
 		</div>
 
-		<select
-			v-model="status"
-			class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white">
-			<option value="draft">Draft</option>
+		<form @submit.prevent="submit" class="space-y-4">
+			<input
+				v-model="title"
+				type="text"
+				placeholder="Title"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25"
+				required />
 
-			<option value="published">Published</option>
-		</select>
+			<input
+				v-model="slug"
+				@input="onSlugInput"
+				type="text"
+				placeholder="Slug (e.g. london-2026-03-15)"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white placeholder-white/40 focus:border-darkYellow focus:ring focus:ring-darkYellow/25" />
 
-		<div class="flex flex-wrap gap-3 pt-4">
-			<AdminButton variant="primary" type="submit" :disabled="saving">
-				{{ saving ? "Saving..." : gig ? "Save Changes" : "Create Gig" }}
-			</AdminButton>
+			<div class="grid gap-4 sm:grid-cols-2">
+				<input
+					v-model="startsAt"
+					type="datetime-local"
+					class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
 
-			<AdminButton
-				v-if="gig"
-				variant="danger"
-				type="button"
-				:disabled="deleting"
-				@click="emit('delete', props.gig)">
-				{{ deleting ? "Deleting..." : "Delete Gig" }}
-			</AdminButton>
-		</div>
-	</form>
+				<input
+					v-model="endsAt"
+					type="datetime-local"
+					class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+			</div>
+
+			<div class="grid gap-4 sm:grid-cols-2">
+				<input
+					v-model="venue"
+					type="text"
+					placeholder="Venue (optional)"
+					class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+
+				<input
+					v-model="city"
+					type="text"
+					placeholder="City (optional)"
+					class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+			</div>
+
+			<input
+				v-model="country"
+				type="text"
+				placeholder="Country"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+
+			<input
+				v-model="ticketUrl"
+				type="url"
+				placeholder="Ticket Link"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+
+			<textarea
+				v-model="artistsPlaying"
+				rows="3"
+				placeholder="Artists Playing"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white"></textarea>
+
+			<textarea
+				v-model="content"
+				rows="8"
+				placeholder="Gig content / description"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white"></textarea>
+
+			<div>
+				<label
+					class="block text-xs font-bold uppercase tracking-widest text-white/75">
+					Poster Image
+				</label>
+
+				<input
+					ref="posterInput"
+					type="file"
+					accept="image/*"
+					@change="onPosterImageSelected"
+					class="mt-2 w-full rounded-none border border-white/20 bg-black/35 p-3 text-white" />
+
+				<p
+					v-if="gig?.data?.poster_image_url"
+					class="mt-2 text-xs text-white/55">
+					Current poster:
+					<a
+						:href="gig.data.poster_image_url"
+						target="_blank"
+						class="text-darkYellow hover:text-lightYellow">
+						View current upload
+					</a>
+				</p>
+			</div>
+
+			<select
+				v-model="status"
+				class="w-full rounded-none border border-white/20 bg-black/35 p-3 text-white">
+				<option value="draft">Draft</option>
+
+				<option value="published">Published</option>
+			</select>
+
+			<div class="flex flex-wrap gap-3 pt-4">
+				<AdminButton variant="primary" type="submit" :disabled="saving">
+					{{
+						saving
+							? "Saving..."
+							: gig
+								? "Save Changes"
+								: "Create Gig"
+					}}
+				</AdminButton>
+
+				<AdminButton
+					v-if="gig"
+					variant="danger"
+					type="button"
+					:disabled="deleting"
+					@click="emit('delete', props.gig)">
+					{{ deleting ? "Deleting..." : "Delete Gig" }}
+				</AdminButton>
+			</div>
+		</form>
+	</div>
 </template>

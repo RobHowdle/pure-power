@@ -19,13 +19,29 @@ const submit = async () => {
 	processing.value = true;
 
 	Object.keys(errors).forEach((key) => delete errors[key]);
+	status.value = "";
 
 	try {
 		await axios.post("/login", form);
 
+		const {data: user} = await axios.get("/api/user");
+
+		if (!user?.id) {
+			status.value =
+				"Login failed. Please check your details and try again.";
+
+			return;
+		}
+
 		// Redirect after successful login
 		router.push("/dashboard");
 	} catch (error) {
+		if (error.response?.status === 401) {
+			status.value = "Invalid email or password.";
+
+			return;
+		}
+
 		if (error.response?.status === 422) {
 			Object.assign(errors, error.response.data.errors);
 		} else {

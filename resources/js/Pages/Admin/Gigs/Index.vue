@@ -42,7 +42,7 @@ const loadGigs = async () => {
 	}
 };
 
-const createGig = async (formData) => {
+const createGig = async ({formData, reset}) => {
 	try {
 		await axios.post("/api/admin/gigs", formData, {
 			headers: {
@@ -52,7 +52,7 @@ const createGig = async (formData) => {
 
 		await loadGigs();
 
-		gigForm.value?.reset();
+		reset?.();
 
 		createPanel.value?.close();
 

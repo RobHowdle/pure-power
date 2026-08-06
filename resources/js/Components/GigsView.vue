@@ -36,7 +36,13 @@
 				</div>
 
 				<article
+					tabindex="0"
 					class="border border-white bg-charcoal flex flex-col w-full max-w-full min-w-0"
+					role="button"
+					aria-label="View gig details"
+					@click="openGigDetails(nextGig)"
+					@keydown.enter.prevent="openGigDetails(nextGig)"
+					@keydown.space.prevent="openGigDetails(nextGig)"
 					style="box-shadow: 0 0 24px 0 #000">
 					<img
 						:src="gigImageSrc(nextGig.poster_image_url)"
@@ -72,12 +78,14 @@
 							:href="nextGig.ticket_url"
 							target="_blank"
 							rel="noopener noreferrer"
+							@click.stop
 							class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
 							style="box-shadow: 0 0 8px #f97316">
 							TICKETS
 						</a>
 						<button
 							v-else
+							@click.stop
 							class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold opacity-60 cursor-not-allowed"
 							style="box-shadow: 0 0 8px #f97316"
 							disabled>
@@ -105,7 +113,13 @@
 					<article
 						v-for="gig in visibleGigs"
 						:key="gig.id"
+						tabindex="0"
 						class="border border-white bg-charcoal flex flex-col w-full max-w-full min-w-0"
+						role="button"
+						aria-label="View gig details"
+						@click="openGigDetails(gig)"
+						@keydown.enter.prevent="openGigDetails(gig)"
+						@keydown.space.prevent="openGigDetails(gig)"
 						style="box-shadow: 0 0 24px 0 #000">
 						<img
 							:src="gigImageSrc(gig.poster_image_url)"
@@ -140,12 +154,14 @@
 								:href="gig.ticket_url"
 								target="_blank"
 								rel="noopener noreferrer"
+								@click.stop
 								class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
 								style="box-shadow: 0 0 8px #f97316">
 								TICKETS
 							</a>
 							<button
 								v-else
+								@click.stop
 								class="mt-auto px-6 py-2 border border-darkYellow w-full text-darkYellow font-bold opacity-60 cursor-not-allowed"
 								style="box-shadow: 0 0 8px #f97316"
 								disabled>
@@ -166,11 +182,19 @@
 				</div>
 			</section>
 		</template>
+
+		<GigDetailsModal
+			:open="isGigModalOpen"
+			:gig="selectedGig"
+			:image-src="gigImageSrc(selectedGig?.poster_image_url)"
+			@close="closeGigDetails" />
 	</main>
 </template>
 
 <script setup>
 import {computed, onMounted, ref} from "vue";
+import logo from "@/assets/logo.webp";
+import GigDetailsModal from "@/Components/GigDetailsModal.vue";
 
 const gigs = ref([]);
 const isLoading = ref(true);
@@ -181,6 +205,8 @@ const apiOrigin =
 
 const nextGig = computed(() => gigs.value[0] ?? null);
 const rest = computed(() => gigs.value.slice(1));
+const selectedGig = ref(null);
+const isGigModalOpen = computed(() => Boolean(selectedGig.value));
 
 const pageSize = 3;
 const visibleCount = ref(pageSize);
@@ -193,6 +219,15 @@ function viewMore() {
 		visibleCount.value + pageSize,
 		rest.value.length,
 	);
+}
+
+function openGigDetails(gig) {
+	if (!gig) return;
+	selectedGig.value = gig;
+}
+
+function closeGigDetails() {
+	selectedGig.value = null;
 }
 
 function formatDate(isoDateTime) {
@@ -217,14 +252,14 @@ function gigImageSrc(imageUrl) {
 		return `${apiOrigin}/${imageUrl}`;
 	}
 
-	return "/src/assets/logo.webp";
+	return logo;
 }
 
 function onGigImageError(event) {
 	const img = event?.target;
 	if (!img) return;
-	if (img.src.endsWith("/src/assets/logo.webp")) return;
-	img.src = "/src/assets/logo.webp";
+	if (img.src === logo) return;
+	img.src = logo;
 }
 
 async function fetchUpcomingGigs() {

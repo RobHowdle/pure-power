@@ -258,7 +258,9 @@ function navOrbitStyle(idx, total) {
 					mode="out-in"
 					@before-leave="onBeforeLeave"
 					@after-enter="onAfterEnter">
-					<div class="route-shell" :key="route.fullPath">
+					<div
+						class="route-shell layout-gutter"
+						:key="route.fullPath">
 						<component :is="Component" />
 					</div>
 				</transition>
@@ -445,6 +447,11 @@ a {
 	min-width: 0;
 	margin-left: 0;
 	margin-right: auto;
+}
+
+.layout-gutter {
+	padding-left: max(2rem, env(safe-area-inset-left));
+	padding-right: max(2rem, env(safe-area-inset-right));
 }
 
 .smoke-veil {

@@ -183,4 +183,26 @@ const router = createRouter({
 	routes,
 });
 
+router.onError((error) => {
+	const message = String(error?.message ?? "");
+	const isChunkLoadError =
+		message.includes("Failed to fetch dynamically imported module") ||
+		message.includes("Importing a module script failed");
+
+	if (!isChunkLoadError) {
+		return;
+	}
+
+	const reloadKey = "pp:stale-chunk-reload";
+
+	if (sessionStorage.getItem(reloadKey) === "1") {
+		sessionStorage.removeItem(reloadKey);
+
+		return;
+	}
+
+	sessionStorage.setItem(reloadKey, "1");
+	window.location.reload();
+});
+
 export default router;

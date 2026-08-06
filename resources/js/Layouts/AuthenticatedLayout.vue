@@ -3,6 +3,7 @@ import {RouterLink, useRoute} from "vue-router";
 import axios from "axios";
 import {ref, onMounted} from "vue";
 import logo from "@/assets/logo.webp";
+import AdminButton from "@/Components/Admin/AdminButton.vue";
 
 const showingNavigationDropdown = ref(false);
 
@@ -36,7 +37,7 @@ async function logout() {
 	<div class="auth-shell">
 		<div class="min-h-screen text-white">
 			<nav class="border-b border-white/10 bg-black/65 backdrop-blur">
-				<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div class="mx-auto max-w-7xl px-8">
 					<div class="flex h-16 justify-between">
 						<div class="flex items-center gap-8">
 							<RouterLink to="/" target="_blank">
@@ -95,15 +96,12 @@ async function logout() {
 						</div>
 
 						<div class="hidden sm:flex items-center">
-							<span class="mr-4 text-sm text-white/70">
-								{{ user?.name ?? "User" }}
-							</span>
-
-							<button
-								@click="logout"
-								class="rounded border border-white/20 px-3 py-2 text-sm hover:bg-white/10">
+							<AdminButton
+								variant="ghost"
+								size="sm"
+								@click="logout">
 								Log Out
-							</button>
+							</AdminButton>
 						</div>
 
 						<button
@@ -143,7 +141,9 @@ async function logout() {
 			</nav>
 
 			<main class="auth-content">
-				<slot />
+				<div class="layout-gutter">
+					<slot />
+				</div>
 			</main>
 		</div>
 	</div>
@@ -200,5 +200,10 @@ async function logout() {
 .auth-content {
 	position: relative;
 	z-index: 1;
+}
+
+.layout-gutter {
+	padding-left: max(2rem, env(safe-area-inset-left));
+	padding-right: max(2rem, env(safe-area-inset-right));
 }
 </style>
