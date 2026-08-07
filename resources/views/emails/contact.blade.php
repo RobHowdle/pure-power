@@ -6,6 +6,10 @@
     <title>New Contact Form Submission</title>
 </head>
 
+@php
+    $logoUrl = url(\Illuminate\Support\Facades\Vite::asset('resources/js/assets/logo.webp'));
+@endphp
+
 <body style="margin:0; padding:0; background:#111; font-family:Arial, Helvetica, sans-serif; color:#eee;">
 
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#111; padding:30px 0;">
@@ -19,7 +23,7 @@
                     <tr>
                         <td align="center" style="background:#000; padding:30px;">
 
-                            <img src="{{ config('app.url') }}/logo.webp" alt="Pure Power Logo" style="max-width:220px;">
+                            <img src="{{ $logoUrl }}" alt="Pure Power Logo" style="max-width:220px;">
 
                         </td>
                     </tr>

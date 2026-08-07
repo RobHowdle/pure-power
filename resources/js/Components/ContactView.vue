@@ -108,13 +108,13 @@
 			</div>
 
 			<div class="mt-6 flex justify-start">
-				<button
+				<AdminButton
 					type="submit"
 					:disabled="sending"
-					class="px-8 py-3 border border-darkYellow text-darkYellow font-bold hover:bg-darkYellow hover:text-white transition"
-					style="box-shadow: 0 0 8px #f97316">
+					size="lg"
+					class="shadow-[0_0_8px_#f97316]">
 					{{ sending ? "Sending..." : "Send" }}
-				</button>
+				</AdminButton>
 			</div>
 		</form>
 	</main>
@@ -122,6 +122,7 @@
 
 <script setup>
 import axios from "axios";
+import AdminButton from "@/Components/Admin/AdminButton.vue";
 import {reactive, ref} from "vue";
 
 const sending = ref(false);
