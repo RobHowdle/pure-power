@@ -19,8 +19,14 @@ class ContactController extends Controller
             'enquiry' => ['required', 'string'],
         ]);
 
-        Mail::to(config('mail.from.address'))
-            ->send(new ContactFormMail($validated));
+        $toAddress = config('mail.contact_form.to.address');
+        $toName = config('mail.contact_form.to.name');
+
+        Mail::to($toAddress, $toName)
+            ->send(
+                (new ContactFormMail($validated))
+                    ->replyTo($validated['email'], $validated['name'])
+            );
 
         return response()->json([
             'success' => true,
